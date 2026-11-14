@@ -32,7 +32,8 @@ dist/
 The native-build archive excludes `.local/` (the prepared Minecraft resources, about 600 MB). It
 contains the compiled `horizon-client`, `horizon-server`, `horizon-ctl`, `horizon-prepare`,
 `native-mods.json`, the staged `mods/`, and the rest of the launcher's version folder. Install the
-same base Horizon version with the launcher to play it.
+same base Horizon version with the launcher to play it (see
+[Install and play on your computer](#install-and-play-on-your-computer)).
 
 ## Quick start
 
@@ -59,6 +60,91 @@ The builder installs its own Rust toolchain, Horizon sources, Cargo cache, and g
 `.work/` (or `HORIZON_LAUNCHER_HOME`). No system Rust is used. Native compile dependencies are
 installed through `apt` on first use: `build-essential`, `pkg-config`, `libasound2-dev`,
 `libudev-dev`, plus the launcher's X11 libraries.
+
+## Install and play on your computer
+
+Every Actions run publishes artifacts under **Actions → the run → Artifacts**:
+
+- `dist/builds/<mod>-<native-build>.zip` — the compiled game and mod sources
+- `dist/hnmod/<mod>-<version>.hnmod` — the packed source bundle
+- `dist/manifest.json` — build versions, hashes, and archive names
+
+Download `horizon-mod-build-<run-number>.zip` and extract it first.
+
+The builder runs on `ubuntu-latest`, so prebuilt archives are **Linux x86_64 games**. Use them on
+Linux; on Windows or macOS, build locally with the launcher (option 2).
+
+### Option 1: Use a prebuilt archive (Linux)
+
+1. Extract `builds/<mod>-<native-build>.zip`. Its `BUILD-INFO.txt` names the **Base Horizon**
+   version, for example `v2026.10.13`.
+2. Install and prepare that base version (preparation needs your own Minecraft install):
+
+   ```bash
+   horizon-launcher install <base-tag>
+   horizon-launcher prepare --version <base-tag>
+   ```
+
+3. Import the build. Pass the extracted zip (it contains `horizon-client`), and mark the unsigned
+   Actions build as trusted:
+
+   ```bash
+   horizon-launcher import-build path/to/<mod>-<native-build>.zip \
+     --version <base-tag> --trust-unsigned
+   ```
+
+   The build is added as its own version on the base's game files and selected.
+4. Play it:
+
+   ```bash
+   horizon-launcher play
+   ```
+
+   You can also do steps 2–4 from the launcher window: install the base version on the Versions
+   page, prepare it, then import the zip/drop it on the window and press Play.
+
+If you built with `--combine`, one archive holds all the mods. Otherwise each archive holds one mod,
+and each may be built on a different Horizon commit — import them separately if you want to play
+them that way.
+
+### Option 2: Add the mod and build it locally (any OS)
+
+This is the recommended route on Windows and macOS, and it lets the launcher compile the mod for
+your own platform.
+
+1. Install a Horizon version and prepare it:
+
+   ```bash
+   horizon-launcher install latest
+   horizon-launcher prepare
+   ```
+
+2. Install the mod into your instance:
+
+   ```bash
+   # From a GitHub repository (the latest release .hnmod, or its default branch)
+   horizon-launcher mods add-github https://github.com/OWNER/REPO --trust-native-code
+
+   # From Horizon's registry, by project id or slug
+   horizon-launcher mods install MOD_ID --source horizon
+   ```
+
+   For a downloaded `.hnmod`, open the launcher's **Mods** page with your instance selected and add
+   the `.hnmod` there (or drop it on the launcher window).
+
+3. Build the game with the mod and play:
+
+   ```bash
+   horizon-launcher native-build --trust-native-code
+   horizon-launcher play
+   ```
+
+   The first native build downloads Rust and takes roughly 20–30 minutes; later builds are
+   incremental. You can do the same from the **Mods** page with **Build** and then **Play**.
+
+> `.hnmod` is a **source bundle**, not a compiled game. There is no copy into a vanilla `mods/`
+> folder: the launcher installs it, and `native-build` compiles it into the game. Native mods are
+> not sandboxed, so only install sources you trust.
 
 ## GitHub Actions
 
