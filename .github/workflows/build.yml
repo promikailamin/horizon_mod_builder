@@ -30,7 +30,7 @@ jobs:
     # - issue_comment: when body contains "/build"
     if: |
       github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'issues' && contains(github.event.label.name, 'build-mod')) ||
+      (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'build-mod')) ||
       (github.event_name == 'issue_comment' && contains(github.event.comment.body, '/build'))
     steps:
       # -----------------------------------------------------------------------
