@@ -1,47 +1,38 @@
 #!/usr/bin/env bash
 # =============================================================================
 # horizon_mod_builder / build.sh
-# Builds Horizon native mods using the Horizon Launcher.
+#
+# Compile Horizon native mods and collect downloadable artifacts.
 #
 # Usage:
-#   ./build.sh [mod-name-or-repo]
+#   ./build.sh                         # build the test mods from issue #1
+#   ./build.sh /path/to/mod            # build a bundle, folder, or .hnmod
+#   ./build.sh https://github.com/u/r  # build a GitHub source/release
+#   ./build.sh --issue-body "$TEXT"    # extract mod URLs from issue text
 #
-# If an argument is given it is treated as the mod source (a local folder or a
-# git repo URL) to build. Otherwise the default horizon-prepare crate is used.
+# Every argument is passed to scripts/build_mods.py.
 # =============================================================================
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LAUNCHER="$SCRIPT_DIR/horizon_launcher"
-MOD_SRC="${1:-}"
+cd "$SCRIPT_DIR"
 
-echo "=== Horizon Mod Builder ==="
-echo "Working dir: $SCRIPT_DIR"
-
-# Make sure launcher is executable
-chmod +x "$LAUNCHER"
-
-# Install native build dependencies (needed on fresh Linux runners)
-if command -v apt-get >/dev/null 2>&1; then
-  echo "Installing native build dependencies..."
-  sudo apt-get update -y
-  sudo apt-get install -y build-essential pkg-config libasound2-dev libudev-dev
-fi
-
-# If a mod source was provided, copy it into the mods/ working folder
-if [[ -n "$MOD_SRC" ]]; then
-  echo "Preparing mod source: $MOD_SRC"
-  rm -rf "$SCRIPT_DIR/mods/work"
-  mkdir -p "$SCRIPT_DIR/mods/work"
-  if [[ "$MOD_SRC" == http* ]]; then
-    git clone --depth 1 "$MOD_SRC" "$SCRIPT_DIR/mods/work"
-  else
-    cp -r "$MOD_SRC"/* "$SCRIPT_DIR/mods/work/"
+if [[ "${HORIZON_BUILDER_SKIP_DEPS:-0}" != "1" ]] && command -v apt-get >/dev/null 2>&1; then
+  missing=0
+  for package in build-essential pkg-config libasound2-dev libudev-dev \
+                 libxkbcommon-x11-0 libxkbcommon0 libxcb-xkb1; do
+    if ! dpkg -s "$package" >/dev/null 2>&1; then
+      missing=1
+      break
+    fi
+  done
+  if [[ "$missing" == "1" ]]; then
+    echo "Installing native build and launcher dependencies..."
+    sudo apt-get update -y
+    sudo apt-get install -y \
+      build-essential pkg-config libasound2-dev libudev-dev \
+      libxkbcommon-x11-0 libxkbcommon0 libxcb-xkb1 libxcb1 libx11-xcb1
   fi
 fi
 
-# Run the native build
-echo "Running horizon_launcher native-build..."
-"$LAUNCHER" native-build --trust-native-code
-
-echo "=== Build complete ==="
+exec python3 "$SCRIPT_DIR/scripts/build_mods.py" "$@"

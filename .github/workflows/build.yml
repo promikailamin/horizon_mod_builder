@@ -1,132 +1,131 @@
 name: Build Horizon Mod
 
 on:
-  # Manual trigger with inputs
+  # Manual trigger.
   workflow_dispatch:
     inputs:
-      mod_repo:
-        description: 'Mod git repository URL (optional)'
+      mod_source:
+        description: 'Mod folder, .hnmod URL, git/GitHub URL, or "test" for the issue #1 test mods'
         required: false
         default: ''
-      mod_name:
-        description: 'Mod name / folder (optional)'
+      horizon_version:
+        description: 'Horizon release/Nightly tag to install, or "latest"'
         required: false
-        default: ''
+        default: 'latest'
+      native_profile:
+        description: 'Native build profile'
+        required: true
+        type: choice
+        options: [performance, dev, release]
+        default: performance
 
-  # Trigger when an issue is opened or labeled "build-mod"
+  # Build when an issue is opened/reopened with the build-mod label, or gets it later.
   issues:
     types: [opened, reopened, labeled]
 
-  # Trigger when someone comments "/build" on an issue
+  # Build when someone comments "/build" (optionally with URLs) on an issue.
   issue_comment:
     types: [created]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: horizon-mod-build-${{ github.event.issue.number || github.run_id }}
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # Only run when appropriate:
-    # - workflow_dispatch: always
-    # - issues: when labeled "build-mod"
-    # - issue_comment: when body contains "/build"
+    timeout-minutes: 120
     if: |
       github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'build-mod')) ||
       (github.event_name == 'issue_comment' && contains(github.event.comment.body, '/build'))
+
     steps:
-      # -----------------------------------------------------------------------
-      # 1. Checkout this repository (launcher + configs + build scripts)
-      # -----------------------------------------------------------------------
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # -----------------------------------------------------------------------
-      # 2. Install native build dependencies (C library headers, etc.)
-      # -----------------------------------------------------------------------
-      - name: Install system dependencies
+      - name: Set up Java 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Install native build and launcher dependencies
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y build-essential pkg-config libasound2-dev libudev-dev
+          sudo apt-get install -y \
+            build-essential pkg-config libasound2-dev libudev-dev \
+            libxkbcommon-x11-0 libxkbcommon0 libxcb-xkb1 libxcb1 libx11-xcb1
 
-      # -----------------------------------------------------------------------
-      # 3. Determine mod source from issue / inputs
-      # -----------------------------------------------------------------------
-      - name: Resolve mod source
-        id: resolve
+      - name: Compile Horizon native mods
         env:
+          HORIZON_BUILDER_SKIP_DEPS: '1'
+          HORIZON_VERSION: ${{ github.event.inputs.horizon_version || 'latest' }}
+          NATIVE_PROFILE: ${{ github.event.inputs.native_profile || 'performance' }}
+          INPUT_SOURCE: ${{ github.event.inputs.mod_source }}
           ISSUE_BODY: ${{ github.event.issue.body }}
           COMMENT_BODY: ${{ github.event.comment.body }}
-          INPUT_REPO: ${{ github.event.inputs.mod_repo }}
-          INPUT_NAME: ${{ github.event.inputs.mod_name }}
         run: |
-          MOD_SRC=""
-          # Prefer manual input
-          if [[ -n "$INPUT_REPO" ]]; then
-            MOD_SRC="$INPUT_REPO"
-            echo "Using workflow_dispatch mod_repo: $MOD_SRC"
-          elif [[ -n "$ISSUE_BODY" ]]; then
-            # Look for a URL in the issue body
-            URL=$(echo "$ISSUE_BODY" | grep -oE 'https?://[^ )]+' | head -1 || true)
-            if [[ -n "$URL" ]]; then
-              MOD_SRC="$URL"
-              echo "Using mod repo from issue: $MOD_SRC"
+          set -euo pipefail
+          args=(--horizon-version "${HORIZON_VERSION:-latest}" --profile "${NATIVE_PROFILE:-performance}")
+
+          if [[ -n "${INPUT_SOURCE:-}" ]]; then
+            if [[ "$INPUT_SOURCE" == "test" || "$INPUT_SOURCE" == "test-mods" ]]; then
+              args+=(--test-mods)
             else
-              echo "No mod repo URL found in issue body — will run default build."
+              args+=("$INPUT_SOURCE")
             fi
-          elif [[ -n "$COMMENT_BODY" ]]; then
-            URL=$(echo "$COMMENT_BODY" | grep -oE 'https?://[^ )]+' | head -1 || true)
-            if [[ -n "$URL" ]]; then
-              MOD_SRC="$URL"
-              echo "Using mod repo from comment: $MOD_SRC"
-            else
-              echo "No mod repo URL found in comment — will run default build."
-            fi
-          else
-            echo "No mod source specified — will run default build."
           fi
-          echo "mod_src=$MOD_SRC" >> "$GITHUB_OUTPUT"
-
-      # -----------------------------------------------------------------------
-      # 4. Optional: set up Minecraft credentials from GitHub Secrets (NEVER in repo)
-      #   Add these in your repo: Settings → Secrets and variables → Actions
-      #   - MINECRAFT_EMAIL
-      #   - MINECRAFT_PASSWORD
-      # -----------------------------------------------------------------------
-      - name: Configure Minecraft launcher (from secrets, if provided)
-        if: env.MINECRAFT_EMAIL != '' && env.MINECRAFT_PASSWORD != ''
-        env:
-          MINECRAFT_EMAIL: ${{ secrets.MINECRAFT_EMAIL }}
-          MINECRAFT_PASSWORD: ${{ secrets.MINECRAFT_PASSWORD }}
-        run: |
-          echo "Minecraft credentials loaded from GitHub Secrets (not stored in repo)."
-          # The horizon_launcher uses these automatically if placed in ~/.minecraft/
-          # You can write them to a launcher config here if needed.
-          mkdir -p ~/.minecraft
-          : # placeholder — launcher handles auth itself
-
-      # -----------------------------------------------------------------------
-      # 5. Build with the Horizon Launcher
-      # -----------------------------------------------------------------------
-      - name: Build Horizon mod
-        env:
-          MOD_SRC: ${{ steps.resolve.outputs.mod_src }}
-        run: |
-          chmod +x horizon_launcher
-          if [[ -n "$MOD_SRC" ]]; then
-            ./build.sh "$MOD_SRC"
-          else
-            ./build.sh
+          if [[ -n "${ISSUE_BODY:-}" ]]; then
+            args+=(--issue-body "$ISSUE_BODY")
+          fi
+          if [[ -n "${COMMENT_BODY:-}" ]]; then
+            args+=(--comment-body "$COMMENT_BODY")
           fi
 
-      # -----------------------------------------------------------------------
-      # 6. Upload build artifacts (.hnmod files) for download
-      # -----------------------------------------------------------------------
+          python3 scripts/build_mods.py "${args[@]}"
+
+      - name: Write build summary
+        if: always()
+        run: |
+          if [[ -f dist/manifest.json ]]; then
+            python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          data = json.loads(Path("dist/manifest.json").read_text())
+          print("## Horizon mod build\n")
+          print(f"Base Horizon: `{data.get('horizon_version')}`  ")
+          print(f"Profile: `{data.get('profile')}`  ")
+          print(f"OK: **{data.get('ok')}**\n")
+          for job in data.get("jobs", []):
+              if job.get("status") == "built":
+                  print(f"### `{job.get('mod_id')}` {job.get('mod_version') or ''}\n")
+                  print(f"- Built version: `{job.get('built_version')}`")
+                  print(f"- Horizon revision: `{job.get('horizon_revision')}`")
+                  print(f"- Source bundle: `{job.get('hnmod')}` (sha256 `{job.get('hnmod_sha256')}`)")
+                  print(f"- Download: `{job.get('artifact')}`")
+              else:
+                  print(f"### `{job.get('name')}` failed\n")
+                  print(f"```\n{job.get('error')}\n```\n")
+          if data.get("errors"):
+              print("### Errors\n")
+              for error in data["errors"]:
+                  print(f"- {error}")
+          PY
+          else
+            echo "## Horizon mod build failed" >> "$GITHUB_STEP_SUMMARY"
+            echo "No dist/manifest.json was produced." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       - name: Upload build artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: horizon-mod-build
-          path: |
-            mods/**/*.hnmod
-            build/**/*.hnmod
+          name: horizon-mod-build-${{ github.run_number }}
+          path: dist/**
+          if-no-files-found: warn
           retention-days: 30
           overwrite: true

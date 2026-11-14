@@ -1,101 +1,128 @@
 # Horizon Mod Builder
 
-A GitHub Actions-powered builder for [Horizon](https://github.com/horizon-client/horizon) native mods.
+A GitHub Actions-powered compiler for [Horizon](https://github.com/horizon-rust/horizon) native mods.
 
-## What this is
+It uses the official **Horizon Launcher** as the compiler. The launcher is the same tool players use:
+it resolves each mod's pinned Horizon commit, downloads the exact Horizon and
+[horizon-mixins](https://github.com/horizon-rust/horizon-mixins) sources, applies the mixins, runs
+Cargo, and installs the compiled game as `native-<commit>-<key>`. This repository wraps that into a
+reproducible builder that also packs `.hnmod` sources and publishes downloadable GitHub Actions
+artifacts.
 
-This repository contains the **Horizon Launcher**, Horizon Rust source, Minecraft configs, and a GitHub Actions workflow that:
+## What it builds
 
-1. Receives a mod source (from a GitHub Issue comment `/build <repo-url>` or manual dispatch).
-2. Installs the native build dependencies (`build-essential`, `pkg-config`, `libasound2-dev`, `libudev-dev`).
-3. Runs `horizon_launcher native-build --trust-native-code` to compile the mod.
-4. Uploads the resulting `.hnmod` file as a GitHub Actions artifact you can download.
+For every mod it accepts:
 
-**No `.hnmod` files are stored in this repository** — they are produced by the build and delivered as workflow artifacts.
+- a **bundle folder** (`horizon-mixin.toml` or `horizon-native.json`)
+- a **`.hnmod`** file, packed or unpacked
+- a folder of bundles / `.hnmod` files
+- a **git/GitHub URL** (a release `.hnmod` is preferred when one exists)
+- issue text containing mod URLs, or the **test mods from issue #1**
+
+and produces under `dist/`:
+
+```
+dist/
+├── builds/<id>-<native-build>.zip   # compiled horizon-client + mod sources + BUILD-INFO.txt
+├── hnmod/<id>-<version>.hnmod       # registry-schema source bundle
+├── logs/<id>.log                    # full launcher/Cargo output
+└── manifest.json                    # versions, hashes, artifact names, failures
+```
+
+The native-build archive excludes `.local/` (the prepared Minecraft resources, about 600 MB). It
+contains the compiled `horizon-client`, `horizon-server`, `horizon-ctl`, `horizon-prepare`,
+`native-mods.json`, the staged `mods/`, and the rest of the launcher's version folder. Install the
+same base Horizon version with the launcher to play it.
+
+## Quick start
+
+```bash
+./build.sh                         # test mods from issue #1
+./build.sh /path/to/mod            # a bundle or folder of bundles
+./build.sh /path/to/mod.hnmod      # a packed .hnmod
+./build.sh https://github.com/user/repo
+./build.sh --issue-body "$(cat issue.txt)"
+```
+
+Useful options:
+
+```bash
+./build.sh --profile dev            # fastest rebuilds; slower game
+./build.sh --profile release        # smallest/fastest game; slowest build
+./build.sh --horizon-version latest # release or Nightly tag (default: latest)
+./build.sh --no-release             # clone GitHub repos instead of release .hnmod assets
+./build.sh --combine                # compile all mods into one game build
+./build.sh --include-resources      # include .local/ resources in the archive
+```
+
+The builder installs its own Rust toolchain, Horizon sources, Cargo cache, and game files inside
+`.work/` (or `HORIZON_LAUNCHER_HOME`). No system Rust is used. Native compile dependencies are
+installed through `apt` on first use: `build-essential`, `pkg-config`, `libasound2-dev`,
+`libudev-dev`, plus the launcher's X11 libraries.
+
+## GitHub Actions
+
+`workflow_dispatch` inputs:
+
+- `mod_source`: folder, `.hnmod` URL, git/GitHub URL, or `test` (blank uses test mods)
+- `horizon_version`: tag or `latest`
+- `native_profile`: `performance` (default), `dev`, or `release`
+
+The workflow also runs when:
+
+- an issue is opened/reopened with the **`build-mod`** label, or receives that label later;
+- an issue comment contains **`/build`**, optionally with URLs.
+
+Artifacts are uploaded as `horizon-mod-build-<run-number>`. The Actions run summary lists every
+built mod, its Horizon revision, `.hnmod` SHA-256, and downloadable archive.
+
+## Test mods (issue #1)
+
+`configs/test-mods.json` points at the two mods from issue #1:
+
+| Mod | Source | Form |
+| --- | --- | --- |
+| Enchantment Hints | `d3grando/enchantmenthints` | source bundle |
+| Mod Menu | `tariksabanuz/ModMenuHorizon` | release `.hnmod` (`mod_menu-0.3.5.hnmod`) |
+
+`./build.sh --test-mods` (or just `./build.sh`) builds both. They pin different Horizon commits, so
+they are compiled as independent games by default. The builder has been run locally against both:
+
+- `enchantmenthints` → `native-9f42064-0bde960edb43`
+- `mod_menu` → `native-fdc87ae-2fcdb6a9e930`
+
+## How compilation works
+
+1. **Base version** — install a Horizon release/Nightly and prepare its resources from
+   `configs/minecraft/.minecraft` (the checked-in client jar and libraries; no Microsoft account is
+   needed).
+2. **Resolve the mod** — a source bundle is staged; a `.hnmod` is safely extracted; a GitHub repo
+   uses its latest release `.hnmod` or is cloned.
+3. **Compile** — `horizon_launcher native-build FOLDER --version BASE --trust-native-code
+   --allow-version-mismatch`. The launcher downloads the mod's pinned Horizon commit, applies
+   Horizon's mixins, builds the game, and records the result in `native-mods.json`.
+4. **Validate** — the builder checks that the new `native-*` version exists, contains the expected
+   mod id, has a compiled `horizon-client`, and that the packed `.hnmod` has the registry layout
+   (`horizon-native.json` + `mixins/<id>/horizon-mixin.toml`).
+5. **Publish** — archives, `.hnmod` files, logs, and `manifest.json` go to `dist/`.
 
 ## Repository layout
 
 ```
 horizon_mod_builder/
-├── horizon_launcher                 # Horizon Launcher executable (build tool)
-├── build.sh                         # Local build script
-├── rust/horizon-prepare/            # Horizon Rust source crate
-├── configs/minecraft/
-│   ├── minecraft.zip                # Minecraft game zip (tracked with Git LFS)
-│   └── .minecraft/                  # Minecraft launcher config (libs, versions)
-│                                       (secrets & usercache excluded)
-├── mods/                            # Mod source goes here (no .hnmod committed)
-├── .github/workflows/build.yml      # GitHub Actions build workflow
-├── .gitignore                       # Excludes .hnmod, secrets, caches
-└── .gitattributes                   # Git LFS tracking for large files
+├── horizon_launcher              # official Horizon Launcher (the compiler)
+├── scripts/build_mods.py         # source resolution, compile, package, manifest
+├── build.sh                      # dependency setup + builder entry point
+├── configs/test-mods.json        # issue #1 test mods
+├── configs/minecraft/.minecraft/ # Minecraft 26.3 client jar + libraries for prepare
+├── .github/workflows/build.yml   # Actions build, summary, artifact upload
+└── rust/horizon-prepare/         # legacy Horizon prepare source copy (not used by the builder)
 ```
-
-## Quick start (local)
-
-```bash
-cd horizon_mod_builder
-chmod +x build.sh horizon_launcher
-
-# Build the default horizon-prepare crate
-./build.sh
-
-# Build a specific mod (local folder or git repo)
-./build.sh /path/to/mod/source
-./build.sh https://github.com/user/some-mod.git
-```
-
-## GitHub Actions setup
-
-1. **Push this repository to GitHub** (see "Pushing to GitHub" below).
-
-2. **Add repository secrets** (never put these in code):
-   - Go to your repo → **Settings** → **Secrets and variables** → **Actions**.
-   - Add `MINECRAFT_EMAIL` and `MINECRAFT_PASSWORD` (or leave empty — the launcher handles auth itself).
-   - **Do NOT commit `launcher_msa_credentials.bin`, `launcher_accounts.json`, or `usercache.json`** — they are already gitignored.
-
-3. **Trigger a build**:
-   - **Manual:** Actions → "Build Horizon Mod" → Run workflow (enter a mod repo URL).
-   - **From an issue:** Create an issue, add the label `build-mod`, or comment `/build <repo-url>`.
-
-4. **Download the artifact:**
-   - After the run finishes, go to the Actions run page → **Artifacts** → download `horizon-mod-build.zip`.
-   - Extract it to get your `.hnmod` file.
-
-## Pushing to GitHub
-
-This replaces your existing `horizon_mod_builder` repo:
-
-```bash
-cd horizon_mod_builder
-git init
-git add .
-git commit -m "Initial commit: Horizon mod builder"
-
-# Point at your GitHub repo (replace USERNAME with your GitHub user)
-git remote add origin https://github.com/USERNAME/horizon_mod_builder.git
-git branch -M main
-git push -u origin main --force
-```
-
-> ⚠️ `--force` overwrites the existing repo. Make sure you have saved anything you need from it first.
-
-### Large files (Git LFS)
-
-`configs/minecraft/minecraft.zip` is 205 MB, which exceeds GitHub's 100 MB file limit. It is tracked with **Git LFS**. Before pushing, install Git LFS:
-
-```bash
-sudo apt install git-lfs   # or brew install git-lfs
-git lfs install
-git lfs track "configs/minecraft/minecraft.zip"
-git add .gitattributes configs/minecraft/minecraft.zip
-git commit -m "Track minecraft.zip with Git LFS"
-git push
-```
-
-If you don't want to use LFS, remove `minecraft.zip` from the repo — the Horizon Launcher downloads Minecraft game data automatically during the build.
 
 ## Security
 
-- `.hnmod` files are **never committed** — they are build outputs only.
-- Minecraft/Microsoft account files (`launcher_msa_credentials.bin`, `launcher_accounts.json`, `usercache.json`, etc.) are **excluded via `.gitignore`**.
-- Provide any account credentials via **GitHub Secrets**, not in the repository.
+Native mods are not sandboxed: they compile into the game and run with the runner's rights. The
+builder passes `--trust-native-code` only because this is an explicit compile workflow for mods you
+choose to build. Review sources before building. No tokens or Minecraft credentials are written to
+the repository or logs. `.hnmod` and build outputs are gitignored and only uploaded as Actions
+artifacts.

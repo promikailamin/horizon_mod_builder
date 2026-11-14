@@ -1,0 +1,14 @@
+{
+  "mods": [
+    {
+      "name": "enchantmenthints",
+      "source": "https://github.com/d3grando/enchantmenthints.git",
+      "prefer_release": true
+    },
+    {
+      "name": "mod_menu",
+      "source": "https://github.com/tariksabanuz/ModMenuHorizon",
+      "prefer_release": true
+    }
+  ]
+}
