@@ -428,12 +428,17 @@ def ensure_horizon(args: argparse.Namespace, env: dict[str, str], logs: Path) ->
     log = logs / "launcher.log"
     installed = installed_versions(env, log)
     if version.lower() == "latest":
+        before = set(installed)
         _, output = run(
             [str(LAUNCHER), "install", "latest"], env=env, log_path=log
         )
-        match = re.search(r"Installed\s+(\S+)", output)
+        after = installed_versions(env, log)
+        added = [tag for tag in after if tag not in before]
+        if added:
+            return added[-1]
+        match = re.search(r"Installed\s+([^\s]+)", output)
         if match:
-            return match.group(1)
+            return match.group(1).rstrip(".,;:")
         _, listing = run(
             [str(LAUNCHER), "versions", "--json"],
             env=env,
