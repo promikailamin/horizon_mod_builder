@@ -1,0 +1,122 @@
+name: Build Horizon Mod
+
+on:
+  # Manual trigger with inputs
+  workflow_dispatch:
+    inputs:
+      mod_repo:
+        description: 'Mod git repository URL (optional)'
+        required: false
+        default: ''
+      mod_name:
+        description: 'Mod name / folder (optional)'
+        required: false
+        default: ''
+
+  # Trigger when an issue is opened or labeled "build-mod"
+  issues:
+    types: [opened, reopened, labeled]
+
+  # Trigger when someone comments "/build" on an issue
+  issue_comment:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Only run when appropriate:
+    # - workflow_dispatch: always
+    # - issues: when labeled "build-mod"
+    # - issue_comment: when body contains "/build"
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issues' && contains(github.event.label.name, 'build-mod')) ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '/build'))
+    steps:
+      # -----------------------------------------------------------------------
+      # 1. Checkout this repository (launcher + configs + build scripts)
+      # -----------------------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # -----------------------------------------------------------------------
+      # 2. Install native build dependencies (C library headers, etc.)
+      # -----------------------------------------------------------------------
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y build-essential pkg-config libasound2-dev libudev-dev
+
+      # -----------------------------------------------------------------------
+      # 3. Determine mod source from issue / inputs
+      # -----------------------------------------------------------------------
+      - name: Resolve mod source
+        id: resolve
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          INPUT_REPO: ${{ github.event.inputs.mod_repo }}
+          INPUT_NAME: ${{ github.event.inputs.mod_name }}
+        run: |
+          MOD_SRC=""
+          # Prefer manual input
+          if [[ -n "$INPUT_REPO" ]]; then
+            MOD_SRC="$INPUT_REPO"
+            echo "Using workflow_dispatch mod_repo: $MOD_SRC"
+          elif [[ -n "$ISSUE_BODY" ]]; then
+            # Look for a URL in the issue body
+            URL=$(echo "$ISSUE_BODY" | grep -oE 'https?://[^ )]+' | head -1 || true)
+            if [[ -n "$URL" ]]; then
+              MOD_SRC="$URL"
+              echo "Using mod repo from issue: $MOD_SRC"
+            fi
+          elif [[ -n "$COMMENT_BODY" ]]; then
+            URL=$(echo "$COMMENT_BODY" | grep -oE 'https?://[^ )]+' | head -1 || true)
+            if [[ -n "$URL" ]]; then
+              MOD_SRC="$URL"
+              echo "Using mod repo from comment: $MOD_SRC"
+            fi
+          fi
+          echo "mod_src=$MOD_SRC" >> "$GITHUB_OUTPUT"
+
+      # -----------------------------------------------------------------------
+      # 4. Optional: set up Minecraft credentials from GitHub Secrets (NEVER in repo)
+      #   Add these in your repo: Settings → Secrets and variables → Actions
+      #   - MINECRAFT_EMAIL
+      #   - MINECRAFT_PASSWORD
+      # -----------------------------------------------------------------------
+      - name: Configure Minecraft launcher (from secrets, if provided)
+        if: env.MINECRAFT_EMAIL != '' && env.MINECRAFT_PASSWORD != ''
+        env:
+          MINECRAFT_EMAIL: ${{ secrets.MINECRAFT_EMAIL }}
+          MINECRAFT_PASSWORD: ${{ secrets.MINECRAFT_PASSWORD }}
+        run: |
+          echo "Minecraft credentials loaded from GitHub Secrets (not stored in repo)."
+          # The horizon_launcher uses these automatically if placed in ~/.minecraft/
+          # You can write them to a launcher config here if needed.
+          mkdir -p ~/.minecraft
+          : # placeholder — launcher handles auth itself
+
+      # -----------------------------------------------------------------------
+      # 5. Build with the Horizon Launcher
+      # -----------------------------------------------------------------------
+      - name: Build Horizon mod
+        env:
+          MOD_SRC: ${{ steps.resolve.outputs.mod_src }}
+        run: |
+          chmod +x horizon_launcher
+          ./build.sh "$MOD_SRC"
+
+      # -----------------------------------------------------------------------
+      # 6. Upload build artifacts (.hnmod files) for download
+      # -----------------------------------------------------------------------
+      - name: Upload build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: horizon-mod-build
+          path: |
+            mods/**/*.hnmod
+            build/**/*.hnmod
+          retention-days: 30
+          overwrite: true

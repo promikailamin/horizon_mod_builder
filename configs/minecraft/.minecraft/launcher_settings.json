@@ -1,0 +1,13 @@
+{
+  "channel" : "release",
+  "customChannels" : [],
+  "deviceId" : 14268281181797420171,
+  "formatVersion" : 0,
+  "locale" : "en-US",
+  "productLibraryDir" : "/home/mikailamin/.minecraft/products",
+  "quickPlayEnabled" : true,
+  "shutDownTimestampUnified" : 1794617792796,
+  "useArm64JreIfSupported" : false,
+  "useMagnifiedMode" : false,
+  "version" : 17
+}

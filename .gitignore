@@ -1,0 +1,51 @@
+# =============================================================================
+# horizon_mod_builder .gitignore
+# =============================================================================
+
+# --- Built / generated output (never commit) ---
+*.hnmod
+*.hnmod.build
+build/
+out/
+dist/
+target/
+*.class
+
+# --- Cargo / Rust (user's local cache — NOT your account) ---
+/cargo/
+/.target/
+Cargo.lock
+*.rs.bak
+
+# --- Minecraft / launcher secrets & user data (NEVER commit) ---
+.minecraft/launcher_msa_credentials.bin
+.minecraft/launcher_accounts.json
+.minecraft/launcher_entitlements.json
+.minecraft/launcher_profiles.json
+.minecraft/usercache.json
+**/usercache.json
+.minecraft/saves/
+.minecraft/resourcepacks/
+.minecraft/assets/
+.minecraft/objects/
+.minecraft/logs/
+.minecraft/downloads/
+.minecraft/webcache2/
+.minecraft/staging/
+.minecraft/update_files/
+.minecraft/runtime/
+.minecraft/bin/
+.minecraft/launcher/
+
+# --- IDE / OS ---
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# --- Temporary / local ---
+*.tmp
+*.bak
+*.log
