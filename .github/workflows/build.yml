@@ -69,13 +69,19 @@ jobs:
             if [[ -n "$URL" ]]; then
               MOD_SRC="$URL"
               echo "Using mod repo from issue: $MOD_SRC"
+            else
+              echo "No mod repo URL found in issue body — will run default build."
             fi
           elif [[ -n "$COMMENT_BODY" ]]; then
             URL=$(echo "$COMMENT_BODY" | grep -oE 'https?://[^ )]+' | head -1 || true)
             if [[ -n "$URL" ]]; then
               MOD_SRC="$URL"
               echo "Using mod repo from comment: $MOD_SRC"
+            else
+              echo "No mod repo URL found in comment — will run default build."
             fi
+          else
+            echo "No mod source specified — will run default build."
           fi
           echo "mod_src=$MOD_SRC" >> "$GITHUB_OUTPUT"
 
@@ -105,7 +111,11 @@ jobs:
           MOD_SRC: ${{ steps.resolve.outputs.mod_src }}
         run: |
           chmod +x horizon_launcher
-          ./build.sh "$MOD_SRC"
+          if [[ -n "$MOD_SRC" ]]; then
+            ./build.sh "$MOD_SRC"
+          else
+            ./build.sh
+          fi
 
       # -----------------------------------------------------------------------
       # 6. Upload build artifacts (.hnmod files) for download
