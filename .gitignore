@@ -46,6 +46,7 @@ Cargo.lock
 Thumbs.db
 
 # --- Temporary / local ---
+__pycache__/
 .work/
 *.tmp
 *.bak
