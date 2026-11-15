@@ -510,6 +510,15 @@ def launcher_env(args: argparse.Namespace) -> tuple[dict[str, str], Path, Path]:
             "HORIZON_LAUNCHER_DESKTOP": str(launcher_home / "desktop"),
         }
     )
+    token = (
+        os.environ.get("HORIZON_GITHUB_TOKEN")
+        or os.environ.get("GH_TOKEN")
+        or os.environ.get("GITHUB_TOKEN")
+        or os.environ.get("PAT_TOKEN")
+    )
+    if token:
+        # The launcher authenticates its own GitHub API requests with this.
+        env["HORIZON_GITHUB_TOKEN"] = token
     env.setdefault(
         "CARGO_BUILD_JOBS", str(max(1, min(8, os.cpu_count() or 4)))
     )

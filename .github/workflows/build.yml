@@ -70,6 +70,7 @@ jobs:
         env:
           HORIZON_BUILDER_SKIP_DEPS: '1'
           GH_TOKEN: ${{ github.token }}
+          HORIZON_GITHUB_TOKEN: ${{ github.token }}
           HORIZON_VERSION: ${{ github.event.inputs.horizon_version || 'latest' }}
           NATIVE_PROFILE: ${{ github.event.inputs.native_profile || 'performance' }}
           BUILD_MODE: ${{ github.event.inputs.mode || 'combined' }}
