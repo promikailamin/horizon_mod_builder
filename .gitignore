@@ -70,3 +70,6 @@ __pycache__/
 !.agent-work/logs/issue8-import.log
 !.agent-work/logs/issue8-upload-dry-run.log
 !.agent-work/logs/issue8-upload-zip-build.log
+!.agent-work/logs/issue9-build.log.gz
+!.agent-work/logs/issue9-import.log
+!.agent-work/logs/issue9-release.log

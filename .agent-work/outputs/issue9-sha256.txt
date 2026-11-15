@@ -1,0 +1,2 @@
+f376a5404e317cef41ea2b00c32328a79ebfb07a380b7d675e9110697ac9bdeb  dist/builds/airjump-native-9f42064-a8abd820b571.zip
+13842a75ac95ce33e2f717b4c59e0687d290ffe387cc4a7e49e5e76f42fc2e7c  dist/hnmod/airjump-0.0.1-26.1.2.hnmod

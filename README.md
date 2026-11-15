@@ -196,6 +196,23 @@ Last verified build (combined, dev profile, base `nightly-2026-11-13-9f42064`):
 - The combined package lists both mods in `native-mods.json` and contains both `.hnmod` sources
   under `mod-source/`.
 
+## AirJump native port (issue #9)
+
+[`mods/airjump`](mods/airjump) is the Horizon native port of the Fabric AirJump mod
+(`promikailamin/AirJump`). It provides AirJump, SuperLaunch and NoFall, with settings in
+`config/airjump.json`.
+
+```bash
+./build.sh mods/airjump --profile dev --horizon-version nightly-2026-11-13-9f42064
+.agent-work/tests/test_import_built.sh dist/builds/airjump-native-*.zip
+```
+
+The finished release is
+[AirJump 0.0.1-26.1.2](https://github.com/promikailamin/horizon_mod_builder/releases/tag/airjump-v0.0.1-26.1.2).
+It contains the `airjump-0.0.1-26.1.2.hnmod` source bundle and a precompiled Linux x86_64
+`airjump-native-9f42064-a8abd820b571.zip`. See [`mods/airjump/README.md`](mods/airjump/README.md)
+for the conversion notes and install commands.
+
 ## Build locally (any OS)
 
 This is the recommended route on Windows and macOS, and it lets the launcher compile the mod for
@@ -261,6 +278,7 @@ horizon_mod_builder/
 ├── build.sh                          # dependency setup + builder entry point
 ├── upload.sh                         # upload local mods and dispatch the workflow
 ├── configs/test-mods.json            # issue #1 test mods
+├── mods/airjump/                     # Horizon native port of the Fabric AirJump mod
 ├── configs/minecraft/.minecraft/     # Minecraft 26.3 client jar + libraries for prepare
 ├── .github/workflows/build.yml       # Actions build, summary, artifact upload
 └── rust/horizon-prepare/             # legacy Horizon prepare source copy (not used by the builder)

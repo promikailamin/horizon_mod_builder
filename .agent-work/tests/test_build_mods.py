@@ -129,5 +129,60 @@ class ArchiveDiscoveryTests(unittest.TestCase):
                 self.assertIn("mixins/gamma/horizon-mixin.toml", archive.namelist())
 
 
+class AirJumpBundleTests(unittest.TestCase):
+    """Keep the Fabric AirJump port buildable as a Horizon bundle."""
+
+    bundle = ROOT / "mods" / "airjump"
+
+    def test_bundle_metadata_and_injection(self) -> None:
+        mod_id, version, manifest = build_mods.read_manifest(self.bundle)
+        self.assertEqual(mod_id, "airjump")
+        self.assertEqual(version, "0.0.1-26.1.2")
+        self.assertEqual(
+            manifest["compatibility"]["horizon_revision"],
+            "9f42064c11efe7ef3e5ed2baad7ddc2a3b36eea0",
+        )
+        injections = manifest["injection"]
+        self.assertEqual(
+            [injection["target"] for injection in injections],
+            [
+                "horizon_client::game::native_hooks::Game<'_>::native_client_tick_post"
+            ],
+        )
+        self.assertTrue((self.bundle / "runtime.rs").is_file())
+        self.assertTrue((self.bundle / "airjump.rs").is_file())
+
+    def test_packs_a_valid_hnmod(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            build_dir = root / "build"
+            build_dir.mkdir()
+            (build_dir / "native-mods.json").write_text(
+                json.dumps(
+                    {
+                        "horizon": "9f42064c11efe7ef3e5ed2baad7ddc2a3b36eea0",
+                        "horizon_mixins": "5a64af938ec86b00d53d16a408aabc0038fb3e57",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            path = build_mods.write_hnmod(
+                build_mods.Job("airjump", self.bundle, str(self.bundle)),
+                build_dir,
+                root / "airjump.hnmod",
+            )
+            build_mods.validate_hnmod(path)
+            with zipfile.ZipFile(path) as archive:
+                native = json.loads(archive.read("horizon-native.json"))
+                self.assertEqual(native["id"], "airjump")
+                self.assertEqual(
+                    native["horizon"],
+                    "9f42064c11efe7ef3e5ed2baad7ddc2a3b36eea0",
+                )
+                self.assertIn(
+                    "mixins/airjump/runtime.rs", archive.namelist()
+                )
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
