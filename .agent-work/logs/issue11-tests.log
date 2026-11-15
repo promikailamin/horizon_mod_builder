@@ -1,0 +1,15 @@
+test_bundle_metadata_and_injection (__main__.AirJumpBundleTests.test_bundle_metadata_and_injection) ... ok
+test_packs_a_valid_hnmod (__main__.AirJumpBundleTests.test_packs_a_valid_hnmod) ... ok
+test_archive_with_wrapper_and_multiple_mods (__main__.ArchiveDiscoveryTests.test_archive_with_wrapper_and_multiple_mods) ... ok
+test_pack_mods_zip_keeps_bundles_and_hnmods (__main__.ArchiveDiscoveryTests.test_pack_mods_zip_keeps_bundles_and_hnmods) ... ok
+test_validate_hnmod_layout (__main__.ArchiveDiscoveryTests.test_validate_hnmod_layout) ... ok
+test_zip_slip_is_rejected (__main__.ArchiveDiscoveryTests.test_zip_slip_is_rejected) ... ok
+test_github_urls_from_issue_text (__main__.IssueSourceTests.test_github_urls_from_issue_text) ... ok
+test_repository_url_shapes (__main__.IssueSourceTests.test_repository_url_shapes) ... ok
+test_container_mounts_homes_outside_the_repository (__main__.PortableBuildTests.test_container_mounts_homes_outside_the_repository) ... ok
+test_container_mounts_workspace_without_leaking_tokens (__main__.PortableBuildTests.test_container_mounts_workspace_without_leaking_tokens) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.010s
+
+OK

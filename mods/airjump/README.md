@@ -48,7 +48,7 @@ Last verified build:
 - Base Horizon: `nightly-2026-11-13-9f42064`
 - Horizon revision: `9f42064c11efe7ef3e5ed2baad7ddc2a3b36eea0`
 - horizon-mixins: `5a64af938ec86b00d53d16a408aabc0038fb3e57`
-- Built version: `native-9f42064-a8abd820b571`
+- Built version: `native-9f42064-7d0d9e4b6ceb`
 - Release: <https://github.com/promikailamin/horizon_mod_builder/releases/tag/airjump-v0.0.2-26.3>
 - Platform: Linux x86_64, compiled against glibc 2.35 (runs on Ubuntu 22.04+, Debian 12+)
 
@@ -57,7 +57,7 @@ Last verified build:
 ```bash
 horizon-launcher install nightly-2026-11-13-9f42064
 horizon-launcher prepare --version nightly-2026-11-13-9f42064
-horizon-launcher import-build airjump-native-9f42064-a8abd820b571.zip \
+horizon-launcher import-build airjump-native-9f42064-7d0d9e4b6ceb.zip \
   --version nightly-2026-11-13-9f42064 --trust-unsigned
 horizon-launcher play
 ```
