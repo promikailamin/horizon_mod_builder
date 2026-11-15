@@ -10,6 +10,7 @@ This script turns that into a reproducible builder:
   git/GitHub URLs, and the test mods from issue #1;
 * installs and prepares a Horizon base version in an isolated launcher home;
 * compiles every mod with ``horizon_launcher native-build``;
+* can compile in a glibc-2.35 container so releases run on older distributions;
 * packs source bundles into valid ``.hnmod`` files;
 * writes downloadable native-build archives and a ``manifest.json`` under
   ``dist/``.
@@ -47,6 +48,7 @@ DEFAULT_MINECRAFT = ROOT / "configs" / "minecraft" / ".minecraft"
 TEST_MODS_FILE = ROOT / "configs" / "test-mods.json"
 DIST = ROOT / "dist"
 WORK = ROOT / ".work"
+DEFAULT_PORTABLE_IMAGE = "horizon-mod-builder:glibc2.35"
 
 # Repositories that are the engine, not a mod source. Issue text often links them.
 IGNORED_REPOS = {
@@ -124,6 +126,67 @@ def run(
     if check and code != 0:
         raise BuildError(f"command failed with exit code {code}: {rendered}")
     return code, "".join(output)
+
+
+def portable_command(command: list[str], env: dict[str, str], image: str) -> list[str]:
+    """Wrap a native-build command in a glibc-2.35 container.
+
+    Compiling on ``ubuntu-latest`` ties the game binary to that runner's glibc
+    (2.43 on Ubuntu 26.04), which cannot start on older distributions. Horizon
+    itself targets glibc 2.35, so the portable image is Ubuntu 22.04/Jammy.
+    """
+    runtime = shutil.which("docker") or shutil.which("podman")
+    if runtime is None:
+        raise BuildError(
+            "--portable needs Docker or Podman to compile against glibc 2.35"
+        )
+
+    launcher_home = Path(env["HORIZON_LAUNCHER_HOME"]).resolve()
+    game_home = Path(env["HORIZON_HOME"]).resolve()
+    container_home = launcher_home / "container-home"
+    container_home.mkdir(parents=True, exist_ok=True)
+
+    mounts = {ROOT}
+    for path in (launcher_home, game_home):
+        if not path.is_relative_to(ROOT):
+            mounts.add(path)
+
+    container = [
+        runtime,
+        "run",
+        "--rm",
+        "--user",
+        f"{os.getuid()}:{os.getgid()}",
+        "-w",
+        str(ROOT),
+    ]
+    for path in sorted(mounts, key=str):
+        container += ["-v", f"{path}:{path}"]
+    container += ["-e", f"HOME={container_home}"]
+
+    extra = {
+        "ALL_PROXY",
+        "GH_TOKEN",
+        "GITHUB_TOKEN",
+        "HTTPS_PROXY",
+        "HTTP_PROXY",
+        "NO_PROXY",
+        "PAT_TOKEN",
+        "SSL_CERT_DIR",
+        "SSL_CERT_FILE",
+        "all_proxy",
+        "http_proxy",
+        "https_proxy",
+        "no_proxy",
+    }
+    for key in sorted(env):
+        if key.startswith(("HORIZON_", "CARGO_", "RUST_")) or key in extra:
+            # Passing the name alone keeps secret values out of the logged command.
+            container += ["-e", key]
+
+    container.append(image)
+    container.extend(command)
+    return container
 
 
 def download(url: str, destination: Path, *, env: dict[str, str]) -> Path:
@@ -640,6 +703,9 @@ def build_job(
     ]
     if args.ignore_pins:
         command.append("--ignore-pins")
+    if getattr(args, "portable", False):
+        image = getattr(args, "portable_image", None) or DEFAULT_PORTABLE_IMAGE
+        command = portable_command(command, env, image)
     say(f"Building {job.mod_id} {job.mod_version} from {job.source}")
     _, output = run(command, env=env, log_path=log)
     match = re.search(r"(\S+) built and selected for its instance", output)
@@ -802,6 +868,7 @@ def archive_build(
     hnmods: list[Path],
     metadata: dict,
     include_resources: bool,
+    portable: bool = False,
 ) -> None:
     destination.parent.mkdir(parents=True, exist_ok=True)
     base = metadata.get("base")
@@ -809,6 +876,11 @@ def archive_build(
     mod_lines = "\n".join(
         f"  - {mod.get('id', '?')} {mod.get('version', '')}".rstrip() for mod in mods
     ) or f"  - {job.mod_id} {job.mod_version}".rstrip()
+    platform = (
+        "Linux x86_64, compiled against glibc 2.35 (Ubuntu 22.04 or newer)."
+        if portable
+        else "Linux x86_64, compiled against the build host's glibc."
+    )
     info = (
         f"Horizon native build {built}\n"
         f"Base Horizon: {base}\n"
@@ -816,6 +888,7 @@ def archive_build(
         f"horizon-mixins: {metadata.get('horizon_mixins')}\n"
         f"Profile: {metadata.get('profile')}\n"
         f"Source: {job.source}\n"
+        f"Platform: {platform}\n"
         "\n"
         "Mods in this build:\n"
         f"{mod_lines}\n"
@@ -830,6 +903,7 @@ def archive_build(
         "\n"
         "Mods:\n"
         f"{mod_lines}\n"
+        f"Platform: {platform}\n"
         "\n"
         "Install and play on Linux:\n"
         f"  horizon-launcher install {base}\n"
@@ -892,6 +966,16 @@ def main(argv: Iterable[str] | None = None) -> int:
     parser.add_argument("--combine", action="store_true", help="compile all mods into one package (default when more than one mod is given)")
     parser.add_argument("--separate", action="store_true", help="build every mod as its own importable archive")
     parser.add_argument("--fail-fast", action="store_true", help="stop after the first mod that fails")
+    parser.add_argument(
+        "--portable",
+        action="store_true",
+        help="compile native builds in the glibc 2.35 portable Docker image",
+    )
+    parser.add_argument(
+        "--portable-image",
+        default=os.environ.get("HORIZON_PORTABLE_IMAGE", DEFAULT_PORTABLE_IMAGE),
+        help="Docker/Podman image used by --portable",
+    )
     args = parser.parse_args(list(argv) if argv is not None else None)
     if args.combine and args.separate:
         parser.error("--combine and --separate cannot be used together")
@@ -1030,6 +1114,7 @@ def main(argv: Iterable[str] | None = None) -> int:
                 hnmods,
                 metadata,
                 args.include_resources,
+                portable=bool(args.portable),
             )
             hnmod_entries = [
                 {

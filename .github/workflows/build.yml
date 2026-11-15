@@ -66,6 +66,13 @@ jobs:
             build-essential pkg-config libasound2-dev libudev-dev \
             libxkbcommon-x11-0 libxkbcommon0 libxcb-xkb1 libxcb1 libx11-xcb1
 
+      - name: Build portable glibc 2.35 compiler image
+        run: |
+          docker build \
+            -f docker/portable-builder.Dockerfile \
+            -t horizon-mod-builder:glibc2.35 \
+            docker
+
       - name: Compile Horizon native mods
         env:
           HORIZON_BUILDER_SKIP_DEPS: '1'
@@ -79,7 +86,7 @@ jobs:
           COMMENT_BODY: ${{ github.event.comment.body }}
         run: |
           set -euo pipefail
-          args=(--horizon-version "${HORIZON_VERSION:-latest}" --profile "${NATIVE_PROFILE:-performance}")
+          args=(--horizon-version "${HORIZON_VERSION:-latest}" --profile "${NATIVE_PROFILE:-performance}" --portable)
           if [[ "${BUILD_MODE:-combined}" == "separate" ]]; then
             args+=(--separate)
           fi

@@ -9,6 +9,7 @@
 #   ./build.sh /path/to/mod            # build a bundle, folder, or .hnmod
 #   ./build.sh https://github.com/u/r  # build a GitHub source/release
 #   ./build.sh --issue-body "$TEXT"    # extract mod URLs from issue text
+#   ./build.sh --portable mods/airjump # compile in the glibc 2.35 container
 #
 # Every argument is passed to scripts/build_mods.py.
 # =============================================================================
@@ -16,6 +17,28 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
+
+portable=0
+for argument in "$@"; do
+  if [[ "$argument" == "--portable" ]]; then
+    portable=1
+  fi
+done
+
+if [[ "$portable" == "1" ]]; then
+  if ! command -v docker >/dev/null 2>&1 && ! command -v podman >/dev/null 2>&1; then
+    echo "error: --portable needs Docker or Podman" >&2
+    exit 1
+  fi
+  image="${HORIZON_PORTABLE_IMAGE:-horizon-mod-builder:glibc2.35}"
+  if [[ "${HORIZON_PORTABLE_SKIP_IMAGE:-0}" != "1" ]]; then
+    runtime="docker"
+    command -v docker >/dev/null 2>&1 || runtime="podman"
+    echo "Building portable compiler image $image (glibc 2.35)..."
+    "$runtime" build -f "$SCRIPT_DIR/docker/portable-builder.Dockerfile" -t "$image" "$SCRIPT_DIR/docker"
+  fi
+  export HORIZON_PORTABLE_IMAGE="$image"
+fi
 
 if [[ "${HORIZON_BUILDER_SKIP_DEPS:-0}" != "1" ]] && command -v apt-get >/dev/null 2>&1; then
   missing=0

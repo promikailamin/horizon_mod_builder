@@ -10,6 +10,7 @@ import tempfile
 import unittest
 import zipfile
 from pathlib import Path
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -66,6 +67,42 @@ class IssueSourceTests(unittest.TestCase):
                 "https://github.com/alice/mod-a/releases/download/v1/mod.hnmod"
             )
         )
+
+
+class PortableBuildTests(unittest.TestCase):
+    def test_container_mounts_workspace_without_leaking_tokens(self) -> None:
+        env = {
+            "HORIZON_LAUNCHER_HOME": str(ROOT / ".work" / "launcher"),
+            "HORIZON_HOME": str(ROOT / ".work" / "game"),
+            "HORIZON_GITHUB_TOKEN": "super-secret-token",
+            "PATH": "/usr/bin",
+        }
+        with mock.patch("build_mods.shutil.which", return_value="/usr/bin/docker"):
+            command = build_mods.portable_command(
+                ["/launcher", "native-build", "/mods"], env, "builder:test"
+            )
+        rendered = " ".join(command)
+        self.assertIn(f"{ROOT}:{ROOT}", rendered)
+        self.assertIn("-e HORIZON_GITHUB_TOKEN", rendered)
+        self.assertNotIn("super-secret-token", rendered)
+        self.assertEqual(command[-4:], ["builder:test", "/launcher", "native-build", "/mods"])
+
+    def test_container_mounts_homes_outside_the_repository(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            launcher_home = Path(tmp) / "launcher"
+            game_home = Path(tmp) / "game"
+            launcher_home.mkdir()
+            game_home.mkdir()
+            env = {
+                "HORIZON_LAUNCHER_HOME": str(launcher_home),
+                "HORIZON_HOME": str(game_home),
+            }
+            with mock.patch("build_mods.shutil.which", return_value="/usr/bin/docker"):
+                command = build_mods.portable_command(["/launcher"], env, "builder:test")
+            rendered = " ".join(command)
+            self.assertIn(f"{launcher_home}:{launcher_home}", rendered)
+            self.assertIn(f"{game_home}:{game_home}", rendered)
+            self.assertTrue((launcher_home / "container-home").is_dir())
 
 
 class ArchiveDiscoveryTests(unittest.TestCase):
@@ -137,7 +174,7 @@ class AirJumpBundleTests(unittest.TestCase):
     def test_bundle_metadata_and_injection(self) -> None:
         mod_id, version, manifest = build_mods.read_manifest(self.bundle)
         self.assertEqual(mod_id, "airjump")
-        self.assertEqual(version, "0.0.1-26.1.2")
+        self.assertEqual(version, "0.0.2-26.3")
         self.assertEqual(
             manifest["compatibility"]["horizon_revision"],
             "9f42064c11efe7ef3e5ed2baad7ddc2a3b36eea0",

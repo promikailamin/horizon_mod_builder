@@ -61,6 +61,7 @@ Useful options:
 ./build.sh --no-release             # clone GitHub repos instead of release .hnmod assets
 ./build.sh --ignore-pins            # build every mod on the base revision
 ./build.sh --include-resources      # include .local/ resources in the archive
+./build.sh --portable mods/airjump  # compile in the glibc 2.35 container (releases)
 ```
 
 The builder installs its own Rust toolchain, Horizon sources, Cargo cache, and game files inside
@@ -68,9 +69,23 @@ The builder installs its own Rust toolchain, Horizon sources, Cargo cache, and g
 installed through `apt` on first use: `build-essential`, `pkg-config`, `libasound2-dev`,
 `libudev-dev`, plus the launcher's X11 libraries.
 
+### Portable builds and glibc
+
+A binary compiled on `ubuntu-latest` is tied to that runner's glibc. In November 2026 the runner is
+Ubuntu 26.04 with glibc 2.43, so those builds fail on Ubuntu 24.04/22.04 and Debian 12 with errors
+like `version 'GLIBC_2.43' not found` in `libm.so.6`.
+
+`--portable` compiles the game in the `docker/portable-builder.Dockerfile` image
+(`eclipse-temurin:25-jdk-jammy`, glibc 2.35), which matches the official Horizon Linux binaries.
+The GitHub Actions workflow always uses it, so release packages run on Ubuntu 22.04+, Ubuntu 24.04
+and Debian 12. Preparation still runs on the host; only `horizon-launcher native-build` is
+containerized. Docker or Podman is required for `--portable`.
+
 ## Install a built package on your computer
 
-Prebuilt Actions packages are **Linux x86_64 games**. On Windows or macOS, build locally instead
+Prebuilt Actions packages are **Linux x86_64 games** compiled against glibc 2.35, so they run on
+Ubuntu 22.04/24.04, Debian 12, and newer glibc distributions. They do not require the runner's
+glibc 2.43. On Windows, macOS, or an older distribution, build locally instead
 (see [Build locally](#build-locally-any-os)).
 
 1. Download the workflow artifact `horizon-mod-build-<run-number>` and extract it.
@@ -203,15 +218,16 @@ Last verified build (combined, dev profile, base `nightly-2026-11-13-9f42064`):
 `config/airjump.json`.
 
 ```bash
-./build.sh mods/airjump --profile dev --horizon-version nightly-2026-11-13-9f42064
+./build.sh --portable mods/airjump --profile dev --horizon-version nightly-2026-11-13-9f42064
 .agent-work/tests/test_import_built.sh dist/builds/airjump-native-*.zip
 ```
 
 The finished release is
-[AirJump 0.0.1-26.1.2](https://github.com/promikailamin/horizon_mod_builder/releases/tag/airjump-v0.0.1-26.1.2).
-It contains the `airjump-0.0.1-26.1.2.hnmod` source bundle and a precompiled Linux x86_64
-`airjump-native-9f42064-a8abd820b571.zip`. See [`mods/airjump/README.md`](mods/airjump/README.md)
-for the conversion notes and install commands.
+[AirJump 0.0.2-26.3](https://github.com/promikailamin/horizon_mod_builder/releases/tag/airjump-v0.0.2-26.3).
+It targets Minecraft 26.3 and the latest Horizon Nightly (`nightly-2026-11-13-9f42064`), and
+contains the `airjump-0.0.2-26.3.hnmod` source bundle plus a precompiled Linux x86_64 package built
+against glibc 2.35. See [`mods/airjump/README.md`](mods/airjump/README.md) for the conversion notes
+and install commands.
 
 ## Build locally (any OS)
 
@@ -275,6 +291,7 @@ horizon_mod_builder/
 ├── horizon_launcher                  # official Horizon Launcher (the compiler)
 ├── scripts/build_mods.py             # source resolution, compile, package, manifest
 ├── scripts/pack_mods_zip.py          # packs local mods for upload.sh
+├── docker/portable-builder.Dockerfile # glibc 2.35 compiler image for releases
 ├── build.sh                          # dependency setup + builder entry point
 ├── upload.sh                         # upload local mods and dispatch the workflow
 ├── configs/test-mods.json            # issue #1 test mods

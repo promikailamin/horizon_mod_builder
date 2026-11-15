@@ -1,4 +1,4 @@
-# AirJump for Horizon
+# AirJump for Horizon (Minecraft 26.3)
 
 Horizon native port of the Fabric mod
 [`promikailamin/AirJump`](https://github.com/promikailamin/AirJump). The original
@@ -9,7 +9,7 @@ same features and settings.
 
 | File | Purpose |
 | --- | --- |
-| `horizon-mixin.toml` | Horizon bundle manifest. Pins Horizon `9f42064` and hooks `native_client_tick_post` at HEAD. |
+| `horizon-mixin.toml` | Horizon bundle manifest. Targets Minecraft 26.3, pins the latest Horizon Nightly `9f42064`, and hooks `native_client_tick_post` at HEAD. |
 | `airjump.rs` | Hook helper called by the game tick. |
 | `runtime.rs` | Native Rust implementation of AirJump, SuperLaunch, NoFall and the JSON config. |
 
@@ -39,7 +39,7 @@ missing or invalid values fall back to the defaults above.
 ## Build
 
 ```bash
-./build.sh mods/airjump --profile dev --horizon-version nightly-2026-11-13-9f42064
+./build.sh --portable mods/airjump --profile dev --horizon-version nightly-2026-11-13-9f42064
 .agent-work/tests/test_import_built.sh dist/builds/airjump-native-*.zip
 ```
 
@@ -49,7 +49,8 @@ Last verified build:
 - Horizon revision: `9f42064c11efe7ef3e5ed2baad7ddc2a3b36eea0`
 - horizon-mixins: `5a64af938ec86b00d53d16a408aabc0038fb3e57`
 - Built version: `native-9f42064-a8abd820b571`
-- Release: <https://github.com/promikailamin/horizon_mod_builder/releases/tag/airjump-v0.0.1-26.1.2>
+- Release: <https://github.com/promikailamin/horizon_mod_builder/releases/tag/airjump-v0.0.2-26.3>
+- Platform: Linux x86_64, compiled against glibc 2.35 (runs on Ubuntu 22.04+, Debian 12+)
 
 ## Install the release
 
@@ -61,8 +62,9 @@ horizon-launcher import-build airjump-native-9f42064-a8abd820b571.zip \
 horizon-launcher play
 ```
 
-The precompiled release zip is Linux x86_64. On other platforms, install
-`airjump-0.0.1-26.1.2.hnmod` and run `horizon-launcher native-build
+The precompiled release zip is Linux x86_64 and is built against glibc 2.35, so it does
+not need the GitHub runner's newer glibc. On other platforms, install
+`airjump-0.0.2-26.3.hnmod` and run `horizon-launcher native-build
 --trust-native-code` to compile it locally.
 
 Native mods are not sandboxed; only install sources you trust.
