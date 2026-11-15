@@ -100,6 +100,19 @@ GLIBC_2.35
 
 Log: `../logs/issue11-glibc-run.log`.
 
+## Release
+
+<https://github.com/promikailamin/horizon_mod_builder/releases/tag/airjump-v0.0.2-26.3>
+
+The previous broken `airjump-v0.0.1-26.1.2` release/tag was removed and the new
+release was created from `main`. Uploaded assets were downloaded back and their
+SHA-256 values matched the local build:
+
+- `airjump-0.0.2-26.3.hnmod` — `4010803b48eaba30992896844c3094af8352365f484b7713a9bad4461e108d52`
+- `airjump-native-9f42064-7d0d9e4b6ceb.zip` — `a61f29cd32f8cb7ccd4abec9a3f97488474ef2a263ecdd184ef10a91f6209f02`
+
+Log: `../logs/issue11-release.log`.
+
 ## Preserved files
 
 - `issue11-manifest.json` — build manifest
@@ -110,3 +123,4 @@ Log: `../logs/issue11-glibc-run.log`.
 - `../logs/issue11-glibc-run.log` — runtime check inside glibc 2.35
 - `../logs/issue11-tests.log` — unit tests
 - `../logs/issue11-docker-build.log` — portable image build
+- `../logs/issue11-release.log` — release replacement and asset verification

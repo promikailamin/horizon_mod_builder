@@ -77,4 +77,5 @@ __pycache__/
 !.agent-work/logs/issue11-docker-build.log
 !.agent-work/logs/issue11-glibc-run.log
 !.agent-work/logs/issue11-import.log
+!.agent-work/logs/issue11-release.log
 !.agent-work/logs/issue11-tests.log
