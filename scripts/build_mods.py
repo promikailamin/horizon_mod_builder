@@ -129,7 +129,13 @@ def run(
 def download(url: str, destination: Path, *, env: dict[str, str]) -> Path:
     destination.parent.mkdir(parents=True, exist_ok=True)
     say(f"+ download {url}")
-    request = urllib.request.Request(url, headers={"User-Agent": "horizon-mod-builder"})
+    headers = {"User-Agent": "horizon-mod-builder"}
+    token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+    if token and url.startswith(
+        ("https://github.com/", "https://api.github.com/", "https://objects.githubusercontent.com/")
+    ):
+        headers["Authorization"] = f"Bearer {token}"
+    request = urllib.request.Request(url, headers=headers)
     try:
         with urllib.request.urlopen(request) as response, destination.open("wb") as file:
             shutil.copyfileobj(response, file)
@@ -179,6 +185,22 @@ def is_github_repo_url(url: str) -> bool:
     return True
 
 
+SKIP_DIRS = {
+    ".git",
+    ".work",
+    "target",
+    "dist",
+    "build",
+    "out",
+    "node_modules",
+    "__pycache__",
+    ".cargo",
+    ".gradle",
+    ".venv",
+    "venv",
+}
+
+
 def valid_bundle(directory: Path) -> bool:
     return (directory / "horizon-mixin.toml").is_file() or (
         directory / "horizon-native.json"
@@ -202,18 +224,18 @@ def bundle_manifests(directory: Path) -> list[Path]:
     return found
 
 
-def extract_hnmod(path: Path, destination: Path) -> Path:
+def _extract_zip(path: Path, destination: Path) -> Path:
+    """Safely extract a zip with no assumptions about its layout."""
     destination.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(path) as archive:
         for member in archive.infolist():
             name = member.filename.replace("\\", "/")
-            parts = Path(name).parts
-            if (
-                not parts
-                or name.startswith("/")
-                or ".." in parts
-                or (len(parts) == 1 and parts[0] == "")
-            ):
+            if not name or name.startswith("/") or ":" in name.split("/")[0]:
+                raise BuildError(f"{path}: unsafe zip entry {member.filename!r}")
+            parts = [part for part in name.split("/") if part not in ("", ".")]
+            if not parts:
+                continue
+            if any(part == ".." for part in parts):
                 raise BuildError(f"{path}: unsafe zip entry {member.filename!r}")
             target = destination.joinpath(*parts)
             if member.is_dir():
@@ -222,9 +244,55 @@ def extract_hnmod(path: Path, destination: Path) -> Path:
             target.parent.mkdir(parents=True, exist_ok=True)
             with archive.open(member) as source, target.open("wb") as file:
                 shutil.copyfileobj(source, file)
+    return destination
+
+
+def extract_hnmod(path: Path, destination: Path) -> Path:
+    _extract_zip(path, destination)
     if not valid_bundle(destination):
         raise BuildError(f"{path}: not a Horizon mod (.hnmod) archive")
     return destination
+
+
+def bundle_roots(directory: Path) -> list[Path]:
+    """Find Horizon bundles in an extracted archive, allowing wrappers and nesting."""
+    roots: list[Path] = []
+    if valid_bundle(directory) or ((directory / "mixins").is_dir() and any(
+        (directory / "mixins").glob("*/horizon-mixin.toml")
+    )):
+        return [directory]
+    direct = bundle_manifests(directory)
+    if direct:
+        return direct
+    for manifest in sorted(directory.rglob("horizon-native.json")):
+        if SKIP_DIRS.intersection(manifest.relative_to(directory).parts):
+            continue
+        roots.append(manifest.parent)
+    for manifest in sorted(directory.rglob("horizon-mixin.toml")):
+        if SKIP_DIRS.intersection(manifest.relative_to(directory).parts):
+            continue
+        parent = manifest.parent
+        native = parent
+        while native != directory.parent:
+            if (native / "horizon-native.json").is_file():
+                parent = native
+                break
+            if native == directory:
+                break
+            native = native.parent
+        roots.append(parent)
+    unique: list[Path] = []
+    for root in sorted(set(roots), key=lambda path: (len(path.parts), str(path))):
+        if any(root == known or known in root.parents for known in unique):
+            continue
+        unique.append(root)
+    if unique:
+        return unique
+    # GitHub source archives wrap the checkout in one directory.
+    children = [child for child in sorted(directory.iterdir()) if child.is_dir()]
+    if len(children) == 1:
+        return bundle_roots(children[0])
+    return []
 
 
 def read_manifest(directory: Path) -> tuple[str, str, dict]:
@@ -266,10 +334,52 @@ def stage_bundle(source: Path, stage_root: Path, job_name: str) -> Job:
     target.mkdir(parents=True)
 
     def ignore(_directory: str, names: list[str]) -> set[str]:
-        return {name for name in names if name in {".git", "target", "dist", ".work"}}
+        return {name for name in names if name in SKIP_DIRS}
 
     shutil.copytree(source, target, dirs_exist_ok=True, ignore=ignore)
     return Job(job_name, target, str(source))
+
+
+def jobs_from_tree(directory: Path, source: str, stage_root: Path) -> list[Job]:
+    """Turn an extracted archive or a folder into buildable mod jobs."""
+    roots = bundle_roots(directory)
+    jobs: list[Job] = []
+    seen: set[str] = set()
+    for root in roots:
+        name = root.name if root != directory else directory.name
+        base = safe_name(name)
+        candidate = base
+        counter = 2
+        while candidate in seen:
+            candidate = f"{base}-{counter}"
+            counter += 1
+        seen.add(candidate)
+        job = stage_bundle(root, stage_root, candidate)
+        job.source = source
+        jobs.append(job)
+    for hnmod in sorted(directory.rglob("*.hnmod")):
+        if SKIP_DIRS.intersection(hnmod.relative_to(directory).parts):
+            continue
+        if any(root == hnmod.parent or root in hnmod.parents for root in roots):
+            continue
+        try:
+            unpacked = extract_hnmod(hnmod, stage_root / safe_name(hnmod.stem))
+        except (OSError, zipfile.BadZipFile) as error:
+            raise BuildError(f"{hnmod}: invalid .hnmod archive: {error}") from error
+        jobs.append(Job(hnmod.stem, unpacked, source, original_hnmod=hnmod))
+    return jobs
+
+
+def jobs_from_archive(path: Path, source: str, stage_root: Path) -> list[Job]:
+    extracted = _extract_zip(path, stage_root / "archives" / safe_name(path.stem))
+    jobs = jobs_from_tree(extracted, source, stage_root)
+    if not jobs:
+        raise BuildError(f"{path}: archive holds no Horizon mod bundle or .hnmod")
+    return jobs
+
+
+def url_path(url: str) -> str:
+    return url.split("#", 1)[0].split("?", 1)[0]
 
 
 def resolve_source(
@@ -290,25 +400,24 @@ def resolve_source(
                 unpacked = extract_hnmod(path, stage_root / safe_name(path.stem))
                 return [Job(path.stem, unpacked, str(path), original_hnmod=path)]
             if zipfile.is_zipfile(path):
-                return [Job(path.stem, extract_hnmod(path, stage_root / safe_name(path.stem)), str(path), original_hnmod=path)]
+                return jobs_from_archive(path, str(path), stage_root)
             raise BuildError(f"{path}: expected a .hnmod, a zip, or a mod folder")
-        bundles = bundle_manifests(path)
-        if bundles:
-            return [stage_bundle(bundle, stage_root, bundle.name) for bundle in bundles]
-        hnmods = sorted(path.glob("*.hnmod"))
-        if hnmods:
-            jobs: list[Job] = []
-            for hnmod in hnmods:
-                unpacked = extract_hnmod(hnmod, stage_root / safe_name(hnmod.stem))
-                jobs.append(Job(hnmod.stem, unpacked, str(hnmod), original_hnmod=hnmod))
+        jobs = jobs_from_tree(path, str(path), stage_root)
+        if jobs:
             return jobs
-        raise BuildError(f"{path}: no horizon-mixin.toml or .hnmod found")
+        raise BuildError(f"{path}: no horizon-mixin.toml, horizon-native.json, or .hnmod found")
 
     if source.startswith(("http://", "https://")):
-        if source.endswith(".hnmod"):
-            downloaded = download(source, stage_root / safe_name(Path(source).name), env=env)
+        remote_path = url_path(source)
+        if remote_path.endswith(".hnmod"):
+            name = safe_name(Path(remote_path).name)
+            downloaded = download(source, stage_root / "downloads" / name, env=env)
             unpacked = extract_hnmod(downloaded, stage_root / safe_name(downloaded.stem))
             return [Job(downloaded.stem, unpacked, source, original_hnmod=downloaded)]
+        if remote_path.endswith(".zip"):
+            name = safe_name(Path(remote_path).name)
+            downloaded = download(source, stage_root / "downloads" / name, env=env)
+            return jobs_from_archive(downloaded, source, stage_root)
         repo = repo_from_url(source)
         if repo and is_github_repo_url(source) and prefer_release:
             try:
@@ -336,10 +445,10 @@ def resolve_source(
             shutil.rmtree(clone)
         clone.parent.mkdir(parents=True, exist_ok=True)
         run(["git", "clone", "--depth", "1", source, str(clone)], env=env)
-        bundles = bundle_manifests(clone)
-        if not bundles:
+        jobs = jobs_from_tree(clone, source, stage_root)
+        if not jobs:
             raise BuildError(f"{source}: cloned repository holds no Horizon mod bundle")
-        return [stage_bundle(bundle, stage_root, bundle.name) for bundle in bundles]
+        return jobs
 
     raise BuildError(f"unsupported mod source: {source}")
 
@@ -355,7 +464,7 @@ def urls_from_text(text: str) -> list[str]:
             part in url for part in ("/issues/", "/pull/", "/actions/", "/commit/", "/tree/")
         ):
             continue
-        if url.endswith(".hnmod") or is_github_repo_url(url):
+        if url_path(url).endswith((".hnmod", ".zip")) or is_github_repo_url(url):
             if url not in found:
                 found.append(url)
     return found
@@ -681,29 +790,65 @@ def archive_build(
     built: str,
     build_dir: Path,
     destination: Path,
-    hnmod: Path | None,
+    hnmods: list[Path],
     metadata: dict,
     include_resources: bool,
 ) -> None:
     destination.parent.mkdir(parents=True, exist_ok=True)
+    base = metadata.get("base")
+    mods = metadata.get("mods", [])
+    mod_lines = "\n".join(
+        f"  - {mod.get('id', '?')} {mod.get('version', '')}".rstrip() for mod in mods
+    ) or f"  - {job.mod_id} {job.mod_version}".rstrip()
     info = (
         f"Horizon native build {built}\n"
-        f"Mod: {job.mod_id} {job.mod_version}\n"
-        f"Source: {job.source}\n"
-        f"Base Horizon: {metadata.get('base')}\n"
+        f"Base Horizon: {base}\n"
         f"Built Horizon revision: {metadata.get('horizon')}\n"
         f"horizon-mixins: {metadata.get('horizon_mixins')}\n"
         f"Profile: {metadata.get('profile')}\n"
+        f"Source: {job.source}\n"
         "\n"
-        "The archive holds the compiled game and the mod sources in mods/.\n"
-        "The prepared Minecraft resources are not included; install the same\n"
-        "base Horizon version with horizon-launcher and prepare it to play.\n"
+        "Mods in this build:\n"
+        f"{mod_lines}\n"
+        "\n"
+        "The archive holds the compiled game. The mods are compiled into\n"
+        "horizon-client; do not copy anything into a vanilla mods/ folder.\n"
+        "The prepared Minecraft resources are not included.\n"
+    ).encode()
+    install = (
+        f"Horizon native build {built}\n"
+        f"Base Horizon: {base}\n"
+        "\n"
+        "Mods:\n"
+        f"{mod_lines}\n"
+        "\n"
+        "Install and play on Linux:\n"
+        f"  horizon-launcher install {base}\n"
+        f"  horizon-launcher prepare --version {base}\n"
+        f"  horizon-launcher import-build <this-zip> --version {base} --trust-unsigned\n"
+        "  horizon-launcher play\n"
+        "\n"
+        "If the base version is already installed and prepared, this is enough:\n"
+        "  horizon-launcher import-build <this-zip> --trust-unsigned\n"
+        "  horizon-launcher play\n"
+        "\n"
+        'The message "It is prepared already, from another installed version."\n'
+        "means the import succeeded and reuses the prepared base resources. It is\n"
+        "not an error. The imported build is selected automatically.\n"
+        "\n"
+        "You can also use the launcher window: install and prepare the base\n"
+        "version on the Versions page, then drop the zip on the window or import\n"
+        "it from the Versions page, and press Play.\n"
+        "\n"
+        "These archives are Linux x86_64 builds made on GitHub Actions. To build\n"
+        "for Windows or macOS, build locally instead (see the project README).\n"
     ).encode()
     skip_top = set() if include_resources else {".local"}
     with zipfile.ZipFile(
         destination, "w", zipfile.ZIP_DEFLATED, compresslevel=6
     ) as archive:
         archive.writestr("BUILD-INFO.txt", info)
+        archive.writestr("INSTALL.txt", install)
         for entry in sorted(build_dir.iterdir()):
             if entry.name in skip_top:
                 continue
@@ -713,8 +858,9 @@ def archive_build(
                         archive.write(path, path.relative_to(build_dir).as_posix())
             elif entry.is_file():
                 archive.write(entry, entry.name)
-        if hnmod is not None and hnmod.is_file():
-            archive.write(hnmod, f"mod-source/{hnmod.name}")
+        for hnmod in hnmods:
+            if hnmod.is_file():
+                archive.write(hnmod, f"mod-source/{hnmod.name}")
 
 
 def main(argv: Iterable[str] | None = None) -> int:
@@ -734,9 +880,12 @@ def main(argv: Iterable[str] | None = None) -> int:
     parser.add_argument("--include-resources", action="store_true", help="include prepared .local resources")
     parser.add_argument("--ignore-pins", action="store_true", help="build every mod on the base revision")
     parser.add_argument("--no-release", action="store_true", help="clone GitHub repos instead of using release .hnmod assets")
-    parser.add_argument("--combine", action="store_true", help="compile all mods together instead of one build each")
+    parser.add_argument("--combine", action="store_true", help="compile all mods into one package (default when more than one mod is given)")
+    parser.add_argument("--separate", action="store_true", help="build every mod as its own importable archive")
     parser.add_argument("--fail-fast", action="store_true", help="stop after the first mod that fails")
     args = parser.parse_args(list(argv) if argv is not None else None)
+    if args.combine and args.separate:
+        parser.error("--combine and --separate cannot be used together")
 
     global DIST
     if args.dist:
@@ -778,7 +927,7 @@ def main(argv: Iterable[str] | None = None) -> int:
             if not found:
                 raise BuildError(f"{source}: no mod bundle found")
             jobs.extend(found)
-        except BuildError as error:
+        except (BuildError, OSError, zipfile.BadZipFile) as error:
             failures.append(f"{source}: {error}")
             say(f"error: {error}")
 
@@ -798,61 +947,111 @@ def main(argv: Iterable[str] | None = None) -> int:
         (DIST / "manifest.json").write_text(json.dumps(summary, indent=2) + "\n")
         return 1
 
-    groups: list[tuple[str, list[Job]]] = []
-    if args.combine and len(jobs) > 1:
+    combine = not args.separate
+    groups: list[tuple[str, Job, list[Job]]] = []
+    if combine and len(jobs) > 1:
         combined = staging / "combined"
         combined.mkdir(parents=True, exist_ok=True)
+        used: set[str] = set()
         for job in jobs:
-            shutil.copytree(job.bundle, combined / safe_name(job.mod_id), dirs_exist_ok=True)
+            base_name = safe_name(job.mod_id or job.name)
+            candidate = base_name
+            counter = 2
+            while candidate in used:
+                candidate = f"{base_name}-{counter}"
+                counter += 1
+            used.add(candidate)
+            shutil.copytree(job.bundle, combined / candidate, dirs_exist_ok=True)
         combined_job = Job("combined", combined, ", ".join(job.source for job in jobs))
-        groups.append(("combined", [combined_job]))
+        groups.append(("combined", combined_job, jobs))
+        say(f"Combining {len(jobs)} mods into one importable package")
     else:
-        groups = [(job.name, [job]) for job in jobs]
+        groups = [(job.name, job, [job]) for job in jobs]
 
     results: list[dict] = []
-    for name, group in groups:
+    for name, build_target, source_jobs in groups:
         try:
-            built, build_dir, _ = build_job(group[0], args, env, base, logs)
+            built, build_dir, _ = build_job(build_target, args, env, base, logs)
             metadata = json.loads((build_dir / "native-mods.json").read_text(encoding="utf-8"))
-            job = group[0]
-            if args.combine:
-                ids = [str(mod.get("id", "")) for mod in metadata.get("mods", [])]
-                job.mod_id = "+".join(ids) if ids else job.mod_id
-                job.mod_version = ""
-            hnmod: Path | None = None
-            if not args.combine:
-                hnmod = write_hnmod(
-                    job,
-                    build_dir,
-                    DIST
-                    / "hnmod"
-                    / f"{safe_name(job.mod_id)}-{safe_name(job.mod_version or 'build')}.hnmod",
+            mods = [
+                {
+                    "id": str(mod.get("id", "")),
+                    "version": str(mod.get("version", "")),
+                }
+                for mod in metadata.get("mods", [])
+            ]
+            if combine and len(jobs) > 1:
+                expected = {source_job.mod_id for source_job in source_jobs}
+                actual = {mod["id"] for mod in mods if mod["id"]}
+                missing = sorted(expected - actual)
+                if missing:
+                    left_out = metadata.get("left_out", [])
+                    raise BuildError(
+                        f"combined build is missing {', '.join(missing)}"
+                        + (f" (left out: {left_out})" if left_out else "")
+                    )
+                ids = [mod["id"] for mod in mods if mod["id"]]
+                build_target.mod_id = "+".join(ids) if ids else build_target.mod_id
+                build_target.mod_version = "+".join(
+                    mod["version"] for mod in mods if mod["version"]
                 )
-            archive = DIST / "builds" / f"{safe_name(job.mod_id)}-{built}.zip"
+            hnmods: list[Path] = []
+            used_hnmods: set[str] = set()
+            for source_job in source_jobs:
+                filename = (
+                    f"{safe_name(source_job.mod_id)}-"
+                    f"{safe_name(source_job.mod_version or 'build')}.hnmod"
+                )
+                candidate = filename
+                counter = 2
+                while candidate in used_hnmods:
+                    stem = Path(filename).stem
+                    candidate = f"{stem}-{counter}.hnmod"
+                    counter += 1
+                used_hnmods.add(candidate)
+                hnmods.append(
+                    write_hnmod(source_job, build_dir, DIST / "hnmod" / candidate)
+                )
+            archive = DIST / "builds" / f"{safe_name(build_target.mod_id)}-{built}.zip"
             archive_build(
-                job, built, build_dir, archive, hnmod, metadata, args.include_resources
+                build_target,
+                built,
+                build_dir,
+                archive,
+                hnmods,
+                metadata,
+                args.include_resources,
             )
+            hnmod_entries = [
+                {
+                    "path": str(hnmod.relative_to(DIST)),
+                    "sha256": sha256(hnmod),
+                }
+                for hnmod in hnmods
+            ]
             result = {
                 "status": "built",
                 "name": name,
-                "mod_id": job.mod_id,
-                "mod_version": job.mod_version,
-                "source": job.source,
+                "mod_id": build_target.mod_id,
+                "mod_version": build_target.mod_version,
+                "mods": mods,
+                "source": build_target.source,
                 "horizon_base": metadata.get("base"),
                 "horizon_revision": metadata.get("horizon"),
                 "horizon_mixins": metadata.get("horizon_mixins"),
                 "profile": metadata.get("profile"),
                 "built_version": built,
-                "hnmod": str(hnmod.relative_to(DIST)) if hnmod else None,
-                "hnmod_sha256": sha256(hnmod) if hnmod else None,
+                "hnmod": hnmod_entries[0]["path"] if len(hnmod_entries) == 1 else None,
+                "hnmod_sha256": hnmod_entries[0]["sha256"] if len(hnmod_entries) == 1 else None,
+                "hnmods": hnmod_entries,
                 "artifact": str(archive.relative_to(DIST)),
                 "artifact_bytes": archive.stat().st_size,
                 "artifact_sha256": sha256(archive),
-                "log": str((logs / f"{safe_name(job.name)}.log").relative_to(DIST)),
+                "log": str((logs / f"{safe_name(name)}.log").relative_to(DIST)),
             }
             results.append(result)
             say(
-                f"Built {job.mod_id} {job.mod_version}: {archive} "
+                f"Built {build_target.mod_id} {build_target.mod_version}: {archive} "
                 f"({archive.stat().st_size // (1024 * 1024)} MiB)"
             )
         except (BuildError, OSError, zipfile.BadZipFile, json.JSONDecodeError) as error:

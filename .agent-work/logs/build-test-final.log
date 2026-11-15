@@ -1,0 +1,115 @@
+No mod source given; using the test mods from issue #1.
+note: GitHub API request failed for https://api.github.com/repos/d3grando/enchantmenthints/releases/latest: HTTP Error 404: Not Found; falling back to cloning the repository
++ git clone --depth 1 https://github.com/d3grando/enchantmenthints.git /home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/staging/sources/d3grando-enchantmenthints
+Cloning into '/home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/staging/sources/d3grando-enchantmenthints'...
++ download https://github.com/tariksabanuz/ModMenuHorizon/releases/download/v2.1/mod_menu-0.3.5.hnmod
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher versions --installed --json
+nightly-2026-11-13-9f42064: Programmer Art and High Contrast not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The title panorama not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The Unifont glyphs not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The languages not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The sounds not added: no Minecraft folder found
+imported-2026-11-15-354dfdb: Programmer Art and High Contrast not added: no Minecraft folder found
+imported-2026-11-15-354dfdb: The title panorama not added: no Minecraft folder found
+imported-2026-11-15-354dfdb: The Unifont glyphs not added: no Minecraft folder found
+imported-2026-11-15-354dfdb: The languages not added: no Minecraft folder found
+imported-2026-11-15-354dfdb: The sounds not added: no Minecraft folder found
+native-9f42064-0bde960edb43: Programmer Art and High Contrast not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The title panorama not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The Unifont glyphs not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The languages not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The sounds not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: Programmer Art and High Contrast not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The title panorama not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The Unifont glyphs not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The languages not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The sounds not added: no Minecraft folder found
+{
+  "installed": [
+    "nightly-2026-11-13-9f42064",
+    "imported-2026-11-15-354dfdb",
+    "native-9f42064-0bde960edb43",
+    "native-fdc87ae-a9845d89dc7b"
+  ],
+  "selected": "imported-2026-11-15-354dfdb"
+}
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher install latest
+nightly-2026-11-13-9f42064: Programmer Art and High Contrast not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The title panorama not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The Unifont glyphs not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The languages not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The sounds not added: no Minecraft folder found
+Installed nightly-2026-11-13-9f42064. It is prepared already, from another installed version.
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher versions --installed --json
+nightly-2026-11-13-9f42064: Programmer Art and High Contrast not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The title panorama not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The Unifont glyphs not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The languages not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The sounds not added: no Minecraft folder found
+imported-2026-11-15-354dfdb: Programmer Art and High Contrast not added: no Minecraft folder found
+imported-2026-11-15-354dfdb: The title panorama not added: no Minecraft folder found
+imported-2026-11-15-354dfdb: The Unifont glyphs not added: no Minecraft folder found
+imported-2026-11-15-354dfdb: The languages not added: no Minecraft folder found
+imported-2026-11-15-354dfdb: The sounds not added: no Minecraft folder found
+native-9f42064-0bde960edb43: Programmer Art and High Contrast not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The title panorama not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The Unifont glyphs not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The languages not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The sounds not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: Programmer Art and High Contrast not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The title panorama not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The Unifont glyphs not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The languages not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The sounds not added: no Minecraft folder found
+{
+  "installed": [
+    "nightly-2026-11-13-9f42064",
+    "imported-2026-11-15-354dfdb",
+    "native-9f42064-0bde960edb43",
+    "native-fdc87ae-a9845d89dc7b"
+  ],
+  "selected": "nightly-2026-11-13-9f42064"
+}
+Using Horizon nightly-2026-11-13-9f42064
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher versions --installed
+nightly-2026-11-13-9f42064: Programmer Art and High Contrast not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The title panorama not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The Unifont glyphs not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The languages not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The sounds not added: no Minecraft folder found
+imported-2026-11-15-354dfdb: Programmer Art and High Contrast not added: no Minecraft folder found
+imported-2026-11-15-354dfdb: The title panorama not added: no Minecraft folder found
+imported-2026-11-15-354dfdb: The Unifont glyphs not added: no Minecraft folder found
+imported-2026-11-15-354dfdb: The languages not added: no Minecraft folder found
+imported-2026-11-15-354dfdb: The sounds not added: no Minecraft folder found
+native-9f42064-0bde960edb43: Programmer Art and High Contrast not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The title panorama not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The Unifont glyphs not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The languages not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The sounds not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: Programmer Art and High Contrast not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The title panorama not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The Unifont glyphs not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The languages not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The sounds not added: no Minecraft folder found
+* nightly-2026-11-13-9f42064  prepared, no sounds (prepare again)
+  imported-2026-11-15-354dfdb  prepared, no sounds (prepare again)
+  native-9f42064-0bde960edb43  prepared, no sounds (prepare again)
+  native-fdc87ae-a9845d89dc7b  prepared, no sounds (prepare again)
+nightly-2026-11-13-9f42064 is already prepared
+Combining 2 mods into one importable package
+Building combined  from https://github.com/d3grando/enchantmenthints.git, https://github.com/tariksabanuz/ModMenuHorizon
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher native-build /home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/staging/combined --version nightly-2026-11-13-9f42064 --trust-native-code --allow-version-mismatch --profile dev
+[ 0:00] Incremental rebuild: Horizon commit fdc87ae to 9f42064; mods enchantmenthints, mod_menu (dev)
+[ 0:00] Downloading Horizon's source at 9f42064
+[ 0:00] Reusing patched game source
+[ 0:01] Compiling the game (dev): 1 crates, now horizon-client
+[ 0:25] Compiling the game (dev): 517 of 521 crates, now horizon-client
+[ 0:25] mod_menu was left out: made for another Horizon version
+[ 0:25] Up to date (no build needed) (dev)
+[ 0:25] mod_menu didn't build on the Horizon you play: building on the one they were made for
+[ 0:25] Up to date (no build needed) (dev)
+native-fdc87ae-a9845d89dc7b built and selected for its instance (26 s).
+Built enchantmenthints+mod_menu 0.1.0+0.3.5: /home/runner/work/horizon_mod_builder/horizon_mod_builder/dist/builds/enchantmenthints-mod_menu-native-fdc87ae-a9845d89dc7b.zip (54 MiB)
+Wrote /home/runner/work/horizon_mod_builder/horizon_mod_builder/dist/manifest.json
+EXIT=0

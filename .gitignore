@@ -51,3 +51,14 @@ __pycache__/
 *.tmp
 *.bak
 *.log
+
+# --- Agent work: keep tests/tools/outputs and small verification logs ---
+.agent-work/tmp/*
+!.agent-work/tmp/.gitkeep
+.agent-work/logs/*
+!.agent-work/logs/tests.log
+!.agent-work/logs/import-test-final.log
+!.agent-work/logs/import-test-script.log
+!.agent-work/logs/upload-dry-run.log
+!.agent-work/logs/build-test-final.log
+!.agent-work/logs/build-test-remote-default-combine.log

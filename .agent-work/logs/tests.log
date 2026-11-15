@@ -1,0 +1,9 @@
+test_archive_with_wrapper_and_multiple_mods (__main__.ArchiveDiscoveryTests.test_archive_with_wrapper_and_multiple_mods) ... ok
+test_pack_mods_zip_keeps_bundles_and_hnmods (__main__.ArchiveDiscoveryTests.test_pack_mods_zip_keeps_bundles_and_hnmods) ... ok
+test_validate_hnmod_layout (__main__.ArchiveDiscoveryTests.test_validate_hnmod_layout) ... ok
+test_zip_slip_is_rejected (__main__.ArchiveDiscoveryTests.test_zip_slip_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.013s
+
+OK

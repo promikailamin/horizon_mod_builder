@@ -18,6 +18,12 @@ on:
         type: choice
         options: [performance, dev, release]
         default: performance
+      mode:
+        description: 'Build all mods into one importable package, or one package per mod'
+        required: true
+        type: choice
+        options: [combined, separate]
+        default: combined
 
   # Build when an issue is opened/reopened with the build-mod label, or gets it later.
   issues:
@@ -63,14 +69,19 @@ jobs:
       - name: Compile Horizon native mods
         env:
           HORIZON_BUILDER_SKIP_DEPS: '1'
+          GH_TOKEN: ${{ github.token }}
           HORIZON_VERSION: ${{ github.event.inputs.horizon_version || 'latest' }}
           NATIVE_PROFILE: ${{ github.event.inputs.native_profile || 'performance' }}
+          BUILD_MODE: ${{ github.event.inputs.mode || 'combined' }}
           INPUT_SOURCE: ${{ github.event.inputs.mod_source }}
           ISSUE_BODY: ${{ github.event.issue.body }}
           COMMENT_BODY: ${{ github.event.comment.body }}
         run: |
           set -euo pipefail
           args=(--horizon-version "${HORIZON_VERSION:-latest}" --profile "${NATIVE_PROFILE:-performance}")
+          if [[ "${BUILD_MODE:-combined}" == "separate" ]]; then
+            args+=(--separate)
+          fi
 
           if [[ -n "${INPUT_SOURCE:-}" ]]; then
             if [[ "$INPUT_SOURCE" == "test" || "$INPUT_SOURCE" == "test-mods" ]]; then
@@ -101,15 +112,25 @@ jobs:
           print(f"Profile: `{data.get('profile')}`  ")
           print(f"OK: **{data.get('ok')}**\n")
           for job in data.get("jobs", []):
-              if job.get("status") == "built":
-                  print(f"### `{job.get('mod_id')}` {job.get('mod_version') or ''}\n")
-                  print(f"- Built version: `{job.get('built_version')}`")
-                  print(f"- Horizon revision: `{job.get('horizon_revision')}`")
-                  print(f"- Source bundle: `{job.get('hnmod')}` (sha256 `{job.get('hnmod_sha256')}`)")
-                  print(f"- Download: `{job.get('artifact')}`")
-              else:
+              if job.get("status") != "built":
                   print(f"### `{job.get('name')}` failed\n")
                   print(f"```\n{job.get('error')}\n```\n")
+                  continue
+              mods = job.get("mods") or [{"id": job.get("mod_id"), "version": job.get("mod_version")}]
+              names = ", ".join(
+                  f"`{mod.get('id')}` {mod.get('version') or ''}".strip()
+                  for mod in mods
+              )
+              print(f"### {names}\n")
+              print(f"- Built version: `{job.get('built_version')}`")
+              print(f"- Horizon revision: `{job.get('horizon_revision')}`")
+              for hnmod in job.get("hnmods", []):
+                  print(f"- Source bundle: `{hnmod.get('path')}` (sha256 `{hnmod.get('sha256')}`)")
+              print(f"- Download: `{job.get('artifact')}`")
+              base = job.get("horizon_base")
+              print(f"- Install: `horizon-launcher import-build <artifact-zip> --version {base} --trust-unsigned`")
+              print("  - If that base is already installed and prepared, omit `--version`.")
+              print('  - `It is prepared already, from another installed version.` means success.')
           if data.get("errors"):
               print("### Errors\n")
               for error in data["errors"]:
