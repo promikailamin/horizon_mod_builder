@@ -78,4 +78,6 @@ __pycache__/
 !.agent-work/logs/issue11-glibc-run.log
 !.agent-work/logs/issue11-import.log
 !.agent-work/logs/issue11-release.log
+!.agent-work/logs/issue11-ci-watch.log
+!.agent-work/logs/issue11-ci-dispatch.log
 !.agent-work/logs/issue11-tests.log

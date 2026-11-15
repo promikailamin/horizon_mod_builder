@@ -100,6 +100,26 @@ GLIBC_2.35
 
 Log: `../logs/issue11-glibc-run.log`.
 
+## GitHub Actions verification
+
+Manual run of the updated workflow:
+
+<https://github.com/promikailamin/horizon_mod_builder/actions/runs/43725294709>
+
+Result: success in 12m6s. The `Build portable glibc 2.35 compiler image`
+and `Compile Horizon native mods` steps both passed.
+
+- Artifact: `horizon-mod-build-26`
+- Built version: `native-9f42064-3ebc26f9a20a`
+- Package SHA-256: `aa90b5dbaeebf1d3ee72ec262afb9e2cfb62f1e805f271d6aca13c78439f2cda`
+- `check_glibc.sh`: OK, every binary requires at most GLIBC 2.35
+  (`horizon-client` 2.35, the helper binaries 2.34)
+- The downloaded CI artifact was imported and its `horizon-client --help`
+  exited 0 inside the glibc 2.35 container.
+
+Log: `../logs/issue11-ci-watch.log`; command log:
+`../logs/issue11-ci-dispatch.log`; manifest: `issue11-ci-manifest.json`.
+
 ## Release
 
 <https://github.com/promikailamin/horizon_mod_builder/releases/tag/airjump-v0.0.2-26.3>
@@ -124,3 +144,6 @@ Log: `../logs/issue11-release.log`.
 - `../logs/issue11-tests.log` — unit tests
 - `../logs/issue11-docker-build.log` — portable image build
 - `../logs/issue11-release.log` — release replacement and asset verification
+- `../logs/issue11-ci-watch.log` — GitHub Actions run and CI artifact checks
+- `../logs/issue11-ci-dispatch.log` — workflow dispatch
+- `issue11-ci-manifest.json` — manifest downloaded from the CI artifact

@@ -1,0 +1,39 @@
+{
+  "ok": true,
+  "generated_at": "2026-11-15T14:48:42Z",
+  "horizon_version": "nightly-2026-11-13-9f42064",
+  "profile": "dev",
+  "errors": [],
+  "jobs": [
+    {
+      "status": "built",
+      "name": "airjump",
+      "mod_id": "airjump",
+      "mod_version": "0.0.2-26.3",
+      "mods": [
+        {
+          "id": "airjump",
+          "version": "0.0.2-26.3"
+        }
+      ],
+      "source": "mods/airjump",
+      "horizon_base": "nightly-2026-11-13-9f42064",
+      "horizon_revision": "9f42064c11efe7ef3e5ed2baad7ddc2a3b36eea0",
+      "horizon_mixins": "5a64af938ec86b00d53d16a408aabc0038fb3e57",
+      "profile": "dev",
+      "built_version": "native-9f42064-3ebc26f9a20a",
+      "hnmod": "hnmod/airjump-0.0.2-26.3.hnmod",
+      "hnmod_sha256": "4010803b48eaba30992896844c3094af8352365f484b7713a9bad4461e108d52",
+      "hnmods": [
+        {
+          "path": "hnmod/airjump-0.0.2-26.3.hnmod",
+          "sha256": "4010803b48eaba30992896844c3094af8352365f484b7713a9bad4461e108d52"
+        }
+      ],
+      "artifact": "builds/airjump-native-9f42064-3ebc26f9a20a.zip",
+      "artifact_bytes": 62736851,
+      "artifact_sha256": "aa90b5dbaeebf1d3ee72ec262afb9e2cfb62f1e805f271d6aca13c78439f2cda",
+      "log": "logs/airjump.log"
+    }
+  ]
+}
