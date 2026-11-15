@@ -57,8 +57,16 @@ __pycache__/
 !.agent-work/tmp/.gitkeep
 .agent-work/logs/*
 !.agent-work/logs/tests.log
+!.agent-work/logs/tests-latest.log
 !.agent-work/logs/import-test-final.log
 !.agent-work/logs/import-test-script.log
 !.agent-work/logs/upload-dry-run.log
 !.agent-work/logs/build-test-final.log
 !.agent-work/logs/build-test-remote-default-combine.log
+!.agent-work/logs/issue8-build.log.gz
+!.agent-work/logs/issue8-ci-combined.log.gz
+!.agent-work/logs/issue8-ci-import.log
+!.agent-work/logs/issue8-ci-launcher.log
+!.agent-work/logs/issue8-import.log
+!.agent-work/logs/issue8-upload-dry-run.log
+!.agent-work/logs/issue8-upload-zip-build.log

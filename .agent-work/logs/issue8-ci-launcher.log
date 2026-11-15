@@ -1,0 +1,71 @@
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher versions --installed --json
+{
+  "installed": [],
+  "selected": null
+}
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher install latest
+Installed nightly-2026-11-13-9f42064. Prepare it next: horizon-launcher prepare --version nightly-2026-11-13-9f42064
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher versions --installed --json
+{
+  "installed": [
+    "nightly-2026-11-13-9f42064"
+  ],
+  "selected": "nightly-2026-11-13-9f42064"
+}
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher versions --installed
+* nightly-2026-11-13-9f42064  not prepared
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher prepare --version nightly-2026-11-13-9f42064 --minecraft /home/runner/work/horizon_mod_builder/horizon_mod_builder/configs/minecraft/.minecraft
+Using Minecraft 26.3 from the chosen folder (/home/runner/work/horizon_mod_builder/horizon_mod_builder/configs/minecraft/.minecraft)
+Downloading the 26.3 server jar from Mojang
+Copying the sounds from your Minecraft install
+No sound (the game will be silent): Missing /home/runner/work/horizon_mod_builder/horizon_mod_builder/configs/minecraft/.minecraft/assets/indexes/34.json. Horizon does not download the game: play 26.3 once in the launcher you play Minecraft Java Edition with so it downloads the game's files, then rerun. Horizon reads the official launcher's folder, ATLauncher's and the CurseForge app's; for Prism Launcher, MultiMC, the Modrinth App or GDLauncher, prepare from the Horizon launcher, which finds their files. If your launcher keeps them in another folder, pass --minecraft-dir or set HORIZON_MINECRAFT_DIR, or name the files with --version-json, --client-jar, --libraries-dir and --assets-dir.
+Imported client 26.3 from /home/runner/work/horizon_mod_builder/horizon_mod_builder/configs/minecraft/.minecraft/versions/26.3/26.3.jar
+client: 11383 classes, 98739 methods
+server: 7762 classes, 72269 methods
+Artifacts: /home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/launcher/versions/nightly-2026-11-13-9f42064/.local/minecraft/26.3
+Checked the game files in 1.0 s
+Exporting block states (VanillaHeightmapOracle)
+Exporting model bindings (VanillaBlockStateBindingOracle)
+Running vanilla's data generator reports
+Copying the client's assets and data
+Title panorama not imported: Missing /home/runner/work/horizon_mod_builder/horizon_mod_builder/configs/minecraft/.minecraft/assets/indexes/34.json. Horizon does not download the game: play 26.3 once in the launcher you play Minecraft Java Edition with so it downloads the game's files, then rerun. Horizon reads the official launcher's folder, ATLauncher's and the CurseForge app's; for Prism Launcher, MultiMC, the Modrinth App or GDLauncher, prepare from the Horizon launcher, which finds their files. If your launcher keeps them in another folder, pass --minecraft-dir or set HORIZON_MINECRAFT_DIR, or name the files with --version-json, --client-jar, --libraries-dir and --assets-dir.; run horizon-prepare panorama later
+Unifont glyphs not imported: Missing /home/runner/work/horizon_mod_builder/horizon_mod_builder/configs/minecraft/.minecraft/assets/indexes/34.json. Horizon does not download the game: play 26.3 once in the launcher you play Minecraft Java Edition with so it downloads the game's files, then rerun. Horizon reads the official launcher's folder, ATLauncher's and the CurseForge app's; for Prism Launcher, MultiMC, the Modrinth App or GDLauncher, prepare from the Horizon launcher, which finds their files. If your launcher keeps them in another folder, pass --minecraft-dir or set HORIZON_MINECRAFT_DIR, or name the files with --version-json, --client-jar, --libraries-dir and --assets-dir.; run horizon-prepare fonts later
+Programmer Art and High Contrast not imported: Missing /home/runner/work/horizon_mod_builder/horizon_mod_builder/configs/minecraft/.minecraft/assets/indexes/34.json. Horizon does not download the game: play 26.3 once in the launcher you play Minecraft Java Edition with so it downloads the game's files, then rerun. Horizon reads the official launcher's folder, ATLauncher's and the CurseForge app's; for Prism Launcher, MultiMC, the Modrinth App or GDLauncher, prepare from the Horizon launcher, which finds their files. If your launcher keeps them in another folder, pass --minecraft-dir or set HORIZON_MINECRAFT_DIR, or name the files with --version-json, --client-jar, --libraries-dir and --assets-dir.; run horizon-prepare packs later
+Languages not imported: Missing /home/runner/work/horizon_mod_builder/horizon_mod_builder/configs/minecraft/.minecraft/assets/indexes/34.json. Horizon does not download the game: play 26.3 once in the launcher you play Minecraft Java Edition with so it downloads the game's files, then rerun. Horizon reads the official launcher's folder, ATLauncher's and the CurseForge app's; for Prism Launcher, MultiMC, the Modrinth App or GDLauncher, prepare from the Horizon launcher, which finds their files. If your launcher keeps them in another folder, pass --minecraft-dir or set HORIZON_MINECRAFT_DIR, or name the files with --version-json, --client-jar, --libraries-dir and --assets-dir.; run horizon-prepare languages later
+Copied the client's assets and data in 1.6 s
+Writing the world generator's bundle
+Wrote the world generator's bundle in 0.4 s
+Exported block states in 8.8 s
+Exporting movement and attributes (VanillaBlockLandingOracle, VanillaEntityAttributeOracle)
+Exported model bindings in 9.7 s
+Exporting entity models (VanillaEntityModelExporter)
+Exported entity models in 0.4 s
+Exporting mob data (VanillaMobDataExporter)
+Exported mob data in 0.4 s
+Exporting command registries (VanillaCommandParseOracle)
+Ran the data generator in 12.7 s
+Exporting the creative inventory (VanillaCreativeTabsExporter)
+Exported movement and attributes in 9.6 s
+Exporting damage and health (VanillaPlayerHealthOracle, VanillaDamageSourceOracle)
+Exported damage and health in 0.1 s
+Exporting collision shapes (VanillaCollisionOracle)
+Exported collision shapes in 0.0 s
+Exporting face visibility (VanillaFaceVisibilityOracle)
+Exported command registries in 9.5 s
+Exported face visibility in 2.9 s
+Exporting gameplay facts (VanillaGameplayFactsExporter)
+Exported the creative inventory in 9.5 s
+Exported gameplay facts in 2.6 s
+Exporting entity types (VanillaEntityTypesExporter)
+Exported entity types in 0.0 s
+Exporting block behaviours (VanillaBlockBehaviourExporter)
+Exported block behaviours in 0.1 s
+Exporting datafix tables (VanillaDataFixTablesExporter)
+Exported datafix tables in 0.2 s
+Exporting block behavior (VanillaSimpleBlockOracle)
+Exported block behavior in 6.0 s
+Exporting structure blocks (VanillaStructureBlockExporter)
+Exported structure blocks in 0.1 s
+Prepared Horizon native-client resources: /home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/launcher/versions/nightly-2026-11-13-9f42064/.local/horizon-client/26.3
+Done in 32.0 s
+nightly-2026-11-13-9f42064 is prepared.

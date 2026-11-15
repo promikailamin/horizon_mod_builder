@@ -36,6 +36,38 @@ def write_bundle(root: Path, mod_id: str, version: str, native: bool = False) ->
     return bundle
 
 
+class IssueSourceTests(unittest.TestCase):
+    def test_github_urls_from_issue_text(self) -> None:
+        text = """
+        Build https://github.com/alice/mod-a/ and
+        https://github.com/bob/mod-b.git plus
+        https://github.com/carol/mod-c/releases/download/v1/mod_c.hnmod
+        https://github.com/horizon-rust/horizon
+        https://github.com/alice/mod-a/issues/1
+        """
+        self.assertEqual(
+            build_mods.urls_from_text(text),
+            [
+                "https://github.com/alice/mod-a/",
+                "https://github.com/bob/mod-b.git",
+                "https://github.com/carol/mod-c/releases/download/v1/mod_c.hnmod",
+            ],
+        )
+
+    def test_repository_url_shapes(self) -> None:
+        self.assertTrue(build_mods.is_github_repo_url("https://github.com/alice/mod-a"))
+        self.assertTrue(build_mods.is_github_repo_url("https://github.com/alice/mod-a/"))
+        self.assertTrue(build_mods.is_github_repo_url("https://github.com/alice/mod-a.git"))
+        self.assertFalse(
+            build_mods.is_github_repo_url("https://github.com/alice/mod-a/issues/1")
+        )
+        self.assertFalse(
+            build_mods.is_github_repo_url(
+                "https://github.com/alice/mod-a/releases/download/v1/mod.hnmod"
+            )
+        )
+
+
 class ArchiveDiscoveryTests(unittest.TestCase):
     def test_archive_with_wrapper_and_multiple_mods(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

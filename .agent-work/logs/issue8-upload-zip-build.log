@@ -1,0 +1,218 @@
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher versions --installed --json
+nightly-2026-11-13-9f42064: Programmer Art and High Contrast not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The title panorama not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The Unifont glyphs not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The languages not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The sounds not added: no Minecraft folder found
+native-9f42064-0bde960edb43: Programmer Art and High Contrast not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The title panorama not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The Unifont glyphs not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The languages not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The sounds not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: Programmer Art and High Contrast not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The title panorama not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The Unifont glyphs not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The languages not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The sounds not added: no Minecraft folder found
+imported-2026-11-15-1f40def: Programmer Art and High Contrast not added: no Minecraft folder found
+imported-2026-11-15-1f40def: The title panorama not added: no Minecraft folder found
+imported-2026-11-15-1f40def: The Unifont glyphs not added: no Minecraft folder found
+imported-2026-11-15-1f40def: The languages not added: no Minecraft folder found
+imported-2026-11-15-1f40def: The sounds not added: no Minecraft folder found
+imported-2026-11-15-7cb7c1e: Programmer Art and High Contrast not added: no Minecraft folder found
+imported-2026-11-15-7cb7c1e: The title panorama not added: no Minecraft folder found
+imported-2026-11-15-7cb7c1e: The Unifont glyphs not added: no Minecraft folder found
+imported-2026-11-15-7cb7c1e: The languages not added: no Minecraft folder found
+imported-2026-11-15-7cb7c1e: The sounds not added: no Minecraft folder found
+{
+  "installed": [
+    "nightly-2026-11-13-9f42064",
+    "native-9f42064-0bde960edb43",
+    "native-fdc87ae-a9845d89dc7b",
+    "imported-2026-11-15-1f40def",
+    "imported-2026-11-15-7cb7c1e"
+  ],
+  "selected": "imported-2026-11-15-7cb7c1e"
+}
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher install latest
+nightly-2026-11-13-9f42064: Programmer Art and High Contrast not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The title panorama not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The Unifont glyphs not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The languages not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The sounds not added: no Minecraft folder found
+Installed nightly-2026-11-13-9f42064. It is prepared already, from another installed version.
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher versions --installed --json
+nightly-2026-11-13-9f42064: Programmer Art and High Contrast not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The title panorama not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The Unifont glyphs not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The languages not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The sounds not added: no Minecraft folder found
+native-9f42064-0bde960edb43: Programmer Art and High Contrast not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The title panorama not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The Unifont glyphs not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The languages not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The sounds not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: Programmer Art and High Contrast not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The title panorama not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The Unifont glyphs not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The languages not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The sounds not added: no Minecraft folder found
+imported-2026-11-15-1f40def: Programmer Art and High Contrast not added: no Minecraft folder found
+imported-2026-11-15-1f40def: The title panorama not added: no Minecraft folder found
+imported-2026-11-15-1f40def: The Unifont glyphs not added: no Minecraft folder found
+imported-2026-11-15-1f40def: The languages not added: no Minecraft folder found
+imported-2026-11-15-1f40def: The sounds not added: no Minecraft folder found
+imported-2026-11-15-7cb7c1e: Programmer Art and High Contrast not added: no Minecraft folder found
+imported-2026-11-15-7cb7c1e: The title panorama not added: no Minecraft folder found
+imported-2026-11-15-7cb7c1e: The Unifont glyphs not added: no Minecraft folder found
+imported-2026-11-15-7cb7c1e: The languages not added: no Minecraft folder found
+imported-2026-11-15-7cb7c1e: The sounds not added: no Minecraft folder found
+{
+  "installed": [
+    "nightly-2026-11-13-9f42064",
+    "native-9f42064-0bde960edb43",
+    "native-fdc87ae-a9845d89dc7b",
+    "imported-2026-11-15-1f40def",
+    "imported-2026-11-15-7cb7c1e"
+  ],
+  "selected": "nightly-2026-11-13-9f42064"
+}
+Using Horizon nightly-2026-11-13-9f42064
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher versions --installed
+nightly-2026-11-13-9f42064: Programmer Art and High Contrast not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The title panorama not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The Unifont glyphs not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The languages not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The sounds not added: no Minecraft folder found
+native-9f42064-0bde960edb43: Programmer Art and High Contrast not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The title panorama not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The Unifont glyphs not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The languages not added: no Minecraft folder found
+native-9f42064-0bde960edb43: The sounds not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: Programmer Art and High Contrast not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The title panorama not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The Unifont glyphs not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The languages not added: no Minecraft folder found
+native-fdc87ae-a9845d89dc7b: The sounds not added: no Minecraft folder found
+imported-2026-11-15-1f40def: Programmer Art and High Contrast not added: no Minecraft folder found
+imported-2026-11-15-1f40def: The title panorama not added: no Minecraft folder found
+imported-2026-11-15-1f40def: The Unifont glyphs not added: no Minecraft folder found
+imported-2026-11-15-1f40def: The languages not added: no Minecraft folder found
+imported-2026-11-15-1f40def: The sounds not added: no Minecraft folder found
+imported-2026-11-15-7cb7c1e: Programmer Art and High Contrast not added: no Minecraft folder found
+imported-2026-11-15-7cb7c1e: The title panorama not added: no Minecraft folder found
+imported-2026-11-15-7cb7c1e: The Unifont glyphs not added: no Minecraft folder found
+imported-2026-11-15-7cb7c1e: The languages not added: no Minecraft folder found
+imported-2026-11-15-7cb7c1e: The sounds not added: no Minecraft folder found
+* nightly-2026-11-13-9f42064  prepared, no sounds (prepare again)
+  native-9f42064-0bde960edb43  prepared, no sounds (prepare again)
+  native-fdc87ae-a9845d89dc7b  prepared, no sounds (prepare again)
+  imported-2026-11-15-1f40def  prepared, no sounds (prepare again)
+  imported-2026-11-15-7cb7c1e  prepared, no sounds (prepare again)
+nightly-2026-11-13-9f42064 is already prepared
+Combining 2 mods into one importable package
+Building combined  from .agent-work/tmp/horizon-mods-20261115-063628.zip, .agent-work/tmp/horizon-mods-20261115-063628.zip
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher native-build /home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/staging/combined --version nightly-2026-11-13-9f42064 --trust-native-code --allow-version-mismatch --profile dev
+[ 0:00] Incremental rebuild: Horizon commit fdc87ae to 9f42064; mods enchantmenthints, mod_menu (dev)
+[ 0:00] Downloading Horizon's source at 9f42064
+[ 0:00] Reusing patched game source
+[ 0:01] Compiling the game (dev): 1 crates, now horizon-core
+[ 0:01] Compiling the game (dev): 2 crates, now horizon-world
+[ 0:01] Compiling the game (dev): 3 crates, now horizon-threads
+[ 0:01] Compiling the game (dev): 4 crates, now naga
+[ 0:01] Compiling the game (dev): 223 of 521 crates, now naga
+[ 0:01] Compiling the game (dev): 237 of 521 crates, now naga
+[ 0:01] Compiling the game (dev): 238 of 521 crates, now horizon-perf-format
+[ 0:02] Compiling the game (dev): 239 of 521 crates, now horizon-perf-format
+[ 0:02] Compiling the game (dev): 248 of 521 crates, now horizon-perf-format
+[ 0:02] Compiling the game (dev): 249 of 521 crates, now horizon-system
+[ 0:16] Compiling the game (dev): 255 of 521 crates, now horizon-system
+[ 0:16] Compiling the game (dev): 256 of 521 crates, now horizon-system
+[ 0:16] Compiling the game (dev): 268 of 521 crates, now horizon-system
+[ 0:16] Compiling the game (dev): 269 of 521 crates, now horizon-hooks
+[ 0:16] Compiling the game (dev): 275 of 521 crates, now horizon-hooks
+[ 0:16] Compiling the game (dev): 276 of 521 crates, now horizon-bench
+[ 0:23] Compiling the game (dev): 284 of 521 crates, now horizon-bench
+[ 0:23] Compiling the game (dev): 285 of 521 crates, now wgpu-hal
+[ 0:23] Compiling the game (dev): 307 of 521 crates, now wgpu-hal
+[ 0:23] Compiling the game (dev): 308 of 521 crates, now wgpu-naga-bridge
+[ 0:23] Compiling the game (dev): 310 of 521 crates, now wgpu-naga-bridge
+[ 0:23] Compiling the game (dev): 311 of 521 crates, now horizon-addresses
+[ 0:23] Compiling the game (dev): 317 of 521 crates, now horizon-addresses
+[ 0:23] Compiling the game (dev): 331 of 521 crates, now horizon-addresses
+[ 0:23] Compiling the game (dev): 332 of 521 crates, now horizon-shader-api
+[ 0:41] Compiling the game (dev): 432 of 521 crates, now horizon-shader-api
+[ 0:41] Compiling the game (dev): 433 of 521 crates, now horizon-protocol
+[ 0:46] Compiling the game (dev): 433 of 521 crates, now horizon-protocol
+[ 0:46] Compiling the game (dev): 434 of 521 crates, now horizon-client-core
+[ 1:03] Compiling the game (dev): 434 of 521 crates, now horizon-client-core
+[ 1:03] Compiling the game (dev): 435 of 521 crates, now horizon-platform
+[ 1:03] Compiling the game (dev): 435 of 521 crates, now horizon-platform
+[ 1:03] Compiling the game (dev): 436 of 521 crates, now wgpu-core-deps-windows-linux-android
+[ 1:03] Compiling the game (dev): 436 of 521 crates, now wgpu-core-deps-windows-linux-android
+[ 1:03] Compiling the game (dev): 437 of 521 crates, now wgpu-core
+[ 1:07] Compiling the game (dev): 437 of 521 crates, now wgpu-core
+[ 1:07] Compiling the game (dev): 438 of 521 crates, now horizon-telemetry
+[ 1:15] Compiling the game (dev): 462 of 521 crates, now horizon-telemetry
+[ 1:15] Compiling the game (dev): 463 of 521 crates, now wgpu
+[ 1:25] Compiling the game (dev): 463 of 521 crates, now wgpu
+[ 1:25] Compiling the game (dev): 464 of 521 crates, now horizon-hdr
+[ 1:26] Compiling the game (dev): 464 of 521 crates, now horizon-hdr
+[ 1:26] Compiling the game (dev): 465 of 521 crates, now horizon-items
+[ 1:28] Compiling the game (dev): 465 of 521 crates, now horizon-items
+[ 1:28] Compiling the game (dev): 466 of 521 crates, now horizon-client-input
+[ 1:36] Compiling the game (dev): 466 of 521 crates, now horizon-client-input
+[ 1:36] Compiling the game (dev): 467 of 521 crates, now horizon-command
+[ 1:45] Compiling the game (dev): 467 of 521 crates, now horizon-command
+[ 1:45] Compiling the game (dev): 468 of 521 crates, now horizon-server-files
+[ 1:49] Compiling the game (dev): 468 of 521 crates, now horizon-server-files
+[ 1:49] Compiling the game (dev): 469 of 521 crates, now horizon-mod-api-gen
+[ 1:50] Compiling the game (dev): 470 of 521 crates, now horizon-mod-api-gen
+[ 1:50] Compiling the game (dev): 471 of 521 crates, now horizon-optifine
+[ 1:51] Compiling the game (dev): 472 of 521 crates, now horizon-optifine
+[ 1:51] Compiling the game (dev): 473 of 521 crates, now horizon-polytone
+[ 2:01] Compiling the game (dev): 473 of 521 crates, now horizon-polytone
+[ 2:01] Compiling the game (dev): 474 of 521 crates, now horizon-shaders
+[ 2:03] Compiling the game (dev): 474 of 521 crates, now horizon-shaders
+[ 2:03] Compiling the game (dev): 475 of 521 crates, now horizon-assets
+[ 2:15] Compiling the game (dev): 475 of 521 crates, now horizon-assets
+[ 2:15] Compiling the game (dev): 476 of 521 crates, now horizon-client-render
+[ 2:19] Compiling the game (dev): 484 of 521 crates, now horizon-client-render
+[ 2:19] Compiling the game (dev): 485 of 521 crates, now horizon-mods
+[ 2:41] Compiling the game (dev): 486 of 521 crates, now horizon-mods
+[ 2:41] Compiling the game (dev): 487 of 521 crates, now horizon-client
+[ 2:41] Compiling the game (dev): 489 of 521 crates, now horizon-client
+[ 2:41] Compiling the game (dev): 490 of 521 crates, now horizon-anticheat
+[ 2:44] Compiling the game (dev): 492 of 521 crates, now horizon-anticheat
+[ 2:44] Compiling the game (dev): 493 of 521 crates, now horizon-friends
+[ 2:51] Compiling the game (dev): 499 of 521 crates, now horizon-friends
+[ 2:51] Compiling the game (dev): 502 of 521 crates, now horizon-friends
+[ 2:51] Compiling the game (dev): 503 of 521 crates, now horizon-client-lib
+[ 2:54] Compiling the game (dev): 503 of 521 crates, now horizon-client-lib
+[ 2:54] Compiling the game (dev): 504 of 521 crates, now horizon-chat-filter
+[ 2:59] Compiling the game (dev): 504 of 521 crates, now horizon-chat-filter
+[ 2:59] Compiling the game (dev): 505 of 521 crates, now horizon-cosmetics
+[ 3:09] Compiling the game (dev): 505 of 521 crates, now horizon-cosmetics
+[ 3:09] Compiling the game (dev): 506 of 521 crates, now horizon-official
+[ 3:09] Compiling the game (dev): 508 of 521 crates, now horizon-official
+[ 3:09] Compiling the game (dev): 509 of 521 crates, now horizon-official
+[ 3:09] Compiling the game (dev): 510 of 521 crates, now horizon-perf-share
+[ 3:11] Compiling the game (dev): 510 of 521 crates, now horizon-perf-share
+[ 3:11] Compiling the game (dev): 511 of 521 crates, now horizon-heartbeat
+[ 3:11] Compiling the game (dev): 511 of 521 crates, now horizon-heartbeat
+[ 3:11] Compiling the game (dev): 512 of 521 crates, now horizon-discord
+[ 3:13] Compiling the game (dev): 512 of 521 crates, now horizon-discord
+[ 3:13] Compiling the game (dev): 513 of 521 crates, now horizon-official-servers
+[ 4:14] Compiling the game (dev): 513 of 521 crates, now horizon-official-servers
+[ 4:14] Compiling the game (dev): 514 of 521 crates, now horizon-official-servers
+[ 4:14] Compiling the game (dev): 515 of 521 crates, now horizon-official-servers
+[ 4:14] Compiling the game (dev): 515 of 521 crates, now horizon-official-servers
+[ 5:41] Compiling the game (dev): 516 of 521 crates, now horizon-official-servers
+[ 5:41] Compiling the game (dev): 517 of 521 crates, now horizon-official-servers
+[ 5:41] mod_menu was left out: made for another Horizon version
+[ 5:41] Up to date (no build needed) (dev)
+[ 5:41] mod_menu didn't build on the Horizon you play: building on the one they were made for
+[ 5:41] Up to date (no build needed) (dev)
+native-fdc87ae-a9845d89dc7b built and selected for its instance (342 s).
+Built enchantmenthints+mod_menu 0.1.0+0.3.5: /home/runner/work/horizon_mod_builder/horizon_mod_builder/dist/builds/enchantmenthints-mod_menu-native-fdc87ae-a9845d89dc7b.zip (54 MiB)
+Wrote /home/runner/work/horizon_mod_builder/horizon_mod_builder/dist/manifest.json

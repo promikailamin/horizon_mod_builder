@@ -1,0 +1,47 @@
+{
+  "ok": true,
+  "generated_at": "2026-11-15T06:42:30Z",
+  "horizon_version": "nightly-2026-11-13-9f42064",
+  "profile": "dev",
+  "errors": [],
+  "jobs": [
+    {
+      "status": "built",
+      "name": "combined",
+      "mod_id": "enchantmenthints+mod_menu",
+      "mod_version": "0.1.0+0.3.5",
+      "mods": [
+        {
+          "id": "enchantmenthints",
+          "version": "0.1.0"
+        },
+        {
+          "id": "mod_menu",
+          "version": "0.3.5"
+        }
+      ],
+      "source": ".agent-work/tmp/horizon-mods-20261115-063628.zip, .agent-work/tmp/horizon-mods-20261115-063628.zip",
+      "horizon_base": "nightly-2026-11-13-9f42064",
+      "horizon_revision": "fdc87aecdbd116bf1e08adcd062fcbaea8c2e2ca",
+      "horizon_mixins": "5a64af938ec86b00d53d16a408aabc0038fb3e57",
+      "profile": "dev",
+      "built_version": "native-fdc87ae-a9845d89dc7b",
+      "hnmod": null,
+      "hnmod_sha256": null,
+      "hnmods": [
+        {
+          "path": "hnmod/enchantmenthints-0.1.0.hnmod",
+          "sha256": "6f1b80a7c22e02b086d5eea2ed6f7c5481b3e40d6a974bf9e382a3df4a2de9df"
+        },
+        {
+          "path": "hnmod/mod_menu-0.3.5.hnmod",
+          "sha256": "5fef518e6ce7417944ab2621711be013cf7e25fdd6d3b25922876e78f090bfa3"
+        }
+      ],
+      "artifact": "builds/enchantmenthints-mod_menu-native-fdc87ae-a9845d89dc7b.zip",
+      "artifact_bytes": 57158674,
+      "artifact_sha256": "9e0bc0a9d49c78795cf767cb467f7ae06d4ffb0737726b6e00d7c23d5982f67a",
+      "log": "logs/combined.log"
+    }
+  ]
+}

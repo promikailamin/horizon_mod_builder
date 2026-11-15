@@ -1,0 +1,16 @@
+Packing local mods from:
+  - /home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/staging/d3grando-enchantmenthints
+  - /home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/staging/downloads/mod_menu-0.3.5.hnmod
+Packed 2 mod source(s), 19 file(s): /home/runner/work/horizon_mod_builder/horizon_mod_builder/.agent-work/tmp/horizon-mods-20261115-063628.zip
+  - /home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/staging/d3grando-enchantmenthints
+  - /home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/staging/downloads/mod_menu-0.3.5.hnmod
+
+Dry run: packaged /home/runner/work/horizon_mod_builder/horizon_mod_builder/.agent-work/tmp/horizon-mods-20261115-063628.zip
+Would create release:
+  gh release create "mod-upload-20261115-063628" "/home/runner/work/horizon_mod_builder/horizon_mod_builder/.agent-work/tmp/horizon-mods-20261115-063628.zip" --repo "promikailamin/horizon_mod_builder" --title "Horizon mod upload 20261115-063628" --notes "Temporary upload for the Horizon mod builder. Safe to delete after the workflow finishes." --prerelease
+Would start workflow:
+  gh workflow run build.yml --repo "promikailamin/horizon_mod_builder" \
+    -f mod_source="https://github.com/promikailamin/horizon_mod_builder/releases/download/mod-upload-20261115-063628/horizon-mods-20261115-063628.zip" \
+    -f horizon_version="latest" \
+    -f native_profile="dev" \
+    -f mode="combined"

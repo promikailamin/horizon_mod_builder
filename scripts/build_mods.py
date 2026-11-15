@@ -177,10 +177,10 @@ def is_github_repo_url(url: str) -> bool:
     if not repo:
         return False
     # A release asset or a deep link is not a repository root.
-    tail = url.split("github.com", 1)[-1]
+    tail = url_path(url).split("github.com", 1)[-1].rstrip("/")
     if any(part in tail for part in ("/issues/", "/pull/", "/actions/", "/commit/", "/tree/")):
         return False
-    if tail.count("/") > 2 and not url.endswith(".git"):
+    if tail.count("/") > 2 and not tail.endswith(".git"):
         return False
     return True
 

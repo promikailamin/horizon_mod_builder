@@ -169,7 +169,9 @@ The workflow also runs when:
 
 Artifacts are uploaded as `horizon-mod-build-<run-number>`. The Actions run summary lists every
 built mod, its Horizon revision, `.hnmod` SHA-256, the import command, and the downloadable
-archive.
+archive. The workflow passes its GitHub token to the launcher as `HORIZON_GITHUB_TOKEN` so resolving
+Horizon/horizon-mixins revisions uses authenticated GitHub API requests instead of the shared
+anonymous rate limit.
 
 ## Test mods (issue #1)
 
@@ -186,8 +188,13 @@ combined build is made on the newest pinned revision (`fdc87ae`) with both mods 
 Last verified build (combined, dev profile, base `nightly-2026-11-13-9f42064`):
 
 - `enchantmenthints` + `mod_menu` → `native-fdc87ae-a9845d89dc7b`
-- The package was imported with `horizon-launcher import-build ... --trust-unsigned` and selected
-  successfully; the imported `horizon-client --help` starts and exits 0.
+- Verified locally and in GitHub Actions
+  ([run #17](https://github.com/promikailamin/horizon_mod_builder/actions/runs/43683190389),
+  artifact `horizon-mod-build-17`). Both packages were imported with
+  `horizon-launcher import-build ... --trust-unsigned` and selected successfully; the imported
+  `horizon-client --help` starts and exits 0.
+- The combined package lists both mods in `native-mods.json` and contains both `.hnmod` sources
+  under `mod-source/`.
 
 ## Build locally (any OS)
 
