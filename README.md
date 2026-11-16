@@ -217,6 +217,23 @@ Last verified build (combined, dev profile, base `nightly-2026-11-13-9f42064`):
 - The combined package lists both mods in `native-mods.json` and contains both `.hnmod` sources
   under `mod-source/`.
 
+## Provided mods from issue #12
+
+`mods.zip` from issue #12 holds `enchantmenthints 0.1.0`, `freecam_plus 1.1.0` and
+`mod_menu 0.3.5`. `mod_menu 0.3.5` targets `fdc87ae` and does not compile on `9f42064` (it uses
+the removed `options_to_game` field), so the three mods are built together on
+`nightly-2026-11-08-fdc87ae` with `ignore_pins`:
+
+```bash
+./build.sh --portable mods.zip \
+  --horizon-version nightly-2026-11-08-fdc87ae --ignore-pins
+```
+
+Last verified build (combined, performance profile, artifact `horizon-mod-build-30`):
+`native-fdc87ae-54435fc46b4b`, containing all three mods with nothing left out. The package was
+imported and smoke-tested, and every binary requires at most GLIBC 2.35. Full details are in
+`.agent-work/outputs/issue12-verification.md`.
+
 ## AirJump native port (issue #9)
 
 [`mods/airjump`](mods/airjump) is the Horizon native port of the Fabric AirJump mod

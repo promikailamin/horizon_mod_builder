@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "generated_at": "2026-11-16T04:04:56Z",
+  "horizon_version": "nightly-2026-11-08-fdc87ae",
+  "profile": "performance",
+  "errors": [],
+  "jobs": [
+    {
+      "status": "built",
+      "name": "combined",
+      "mod_id": "enchantmenthints+freecam_plus+mod_menu",
+      "mod_version": "0.1.0+1.1.0+0.3.5",
+      "mods": [
+        {
+          "id": "enchantmenthints",
+          "version": "0.1.0"
+        },
+        {
+          "id": "freecam_plus",
+          "version": "1.1.0"
+        },
+        {
+          "id": "mod_menu",
+          "version": "0.3.5"
+        }
+      ],
+      "source": "https://github.com/user-attachments/files/34895031/mods.zip, https://github.com/user-attachments/files/34895031/mods.zip, https://github.com/user-attachments/files/34895031/mods.zip",
+      "horizon_base": "nightly-2026-11-08-fdc87ae",
+      "horizon_revision": "fdc87aecdbd116bf1e08adcd062fcbaea8c2e2ca",
+      "horizon_mixins": "e59da9094f0c2fdda6c627fe9eff22dec6a906f0",
+      "profile": "performance",
+      "built_version": "native-fdc87ae-54435fc46b4b",
+      "hnmod": null,
+      "hnmod_sha256": null,
+      "hnmods": [
+        {
+          "path": "hnmod/enchantmenthints-0.1.0.hnmod",
+          "sha256": "6f1b80a7c22e02b086d5eea2ed6f7c5481b3e40d6a974bf9e382a3df4a2de9df"
+        },
+        {
+          "path": "hnmod/freecam_plus-1.1.0.hnmod",
+          "sha256": "07deac7e39768a1750a0e42b377ed79561ee1dce4d4fac7bdd542c2da5c7e7c3"
+        },
+        {
+          "path": "hnmod/mod_menu-0.3.5.hnmod",
+          "sha256": "5fef518e6ce7417944ab2621711be013cf7e25fdd6d3b25922876e78f090bfa3"
+        }
+      ],
+      "artifact": "builds/enchantmenthints-freecam_plus-mod_menu-native-fdc87ae-54435fc46b4b.zip",
+      "artifact_bytes": 47389988,
+      "artifact_sha256": "ca0155c4b3ab64f035c87fd6fdb3fdcb1b5bda21538c618b91210ae931c3d6d6",
+      "log": "logs/combined.log"
+    }
+  ]
+}

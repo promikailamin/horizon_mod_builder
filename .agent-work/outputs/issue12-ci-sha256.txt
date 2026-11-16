@@ -1,0 +1,4 @@
+ca0155c4b3ab64f035c87fd6fdb3fdcb1b5bda21538c618b91210ae931c3d6d6  .agent-work/tmp/issue-12/ci-artifact/builds/enchantmenthints-freecam_plus-mod_menu-native-fdc87ae-54435fc46b4b.zip
+6f1b80a7c22e02b086d5eea2ed6f7c5481b3e40d6a974bf9e382a3df4a2de9df  .agent-work/tmp/issue-12/ci-artifact/hnmod/enchantmenthints-0.1.0.hnmod
+07deac7e39768a1750a0e42b377ed79561ee1dce4d4fac7bdd542c2da5c7e7c3  .agent-work/tmp/issue-12/ci-artifact/hnmod/freecam_plus-1.1.0.hnmod
+5fef518e6ce7417944ab2621711be013cf7e25fdd6d3b25922876e78f090bfa3  .agent-work/tmp/issue-12/ci-artifact/hnmod/mod_menu-0.3.5.hnmod

@@ -84,7 +84,12 @@ __pycache__/
 !.agent-work/logs/issue12-build.log.gz
 !.agent-work/logs/issue12-build-fdc87ae-ignore-pins.log
 !.agent-work/logs/issue12-build-ignore-pins.log
+!.agent-work/logs/issue12-ci-combined.log.gz
 !.agent-work/logs/issue12-ci-dispatch.log
 !.agent-work/logs/issue12-ci-failed.log.gz
+!.agent-work/logs/issue12-ci-glibc.log
+!.agent-work/logs/issue12-ci-import.log
+!.agent-work/logs/issue12-glibc.log
+!.agent-work/logs/issue12-import.log
 !.agent-work/logs/issue12-modmenu-ignore-pins.log
 !.agent-work/logs/issue12-tests.log

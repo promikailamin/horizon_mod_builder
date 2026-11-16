@@ -2,3 +2,7 @@ https://github.com/promikailamin/horizon_mod_builder/actions/runs/43797496378
 in_progress		Build Horizon Mod	Build Horizon Mod	main	workflow_dispatch	43797496378	6s	2026-11-16T03:19:31Z
 completed	skipped	run the build workflow action with my provided mods in one pkg import build	Build Horizon Mod	main	issues	43797361687	1s	2026-11-16T03:18:11Z
 completed	success	There was a problem when i import-build this mod builder builds	Build Horizon Mod	main	issue_comment	43726622638	17m50s	2026-11-15T14:51:24Z
+https://github.com/promikailamin/horizon_mod_builder/actions/runs/43800593165
+in_progress		Build Horizon Mod	Build Horizon Mod	main	workflow_dispatch	43800593165	6s	2026-11-16T03:51:15Z
+completed	failure	Build Horizon Mod	Build Horizon Mod	main	workflow_dispatch	43797496378	14m42s	2026-11-16T03:19:31Z
+completed	skipped	run the build workflow action with my provided mods in one pkg import build	Build Horizon Mod	main	issues	43797361687	1s	2026-11-16T03:18:11Z
