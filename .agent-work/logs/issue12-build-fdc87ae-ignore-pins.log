@@ -1,0 +1,201 @@
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher versions --installed --json
+nightly-2026-11-13-9f42064: Programmer Art and High Contrast not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The title panorama not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The Unifont glyphs not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The languages not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The sounds not added: no Minecraft folder found
+native-9f42064-ff14462828e6: Programmer Art and High Contrast not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The title panorama not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The Unifont glyphs not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The languages not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The sounds not added: no Minecraft folder found
+{
+  "installed": [
+    "nightly-2026-11-13-9f42064",
+    "native-9f42064-ff14462828e6"
+  ],
+  "selected": "nightly-2026-11-13-9f42064"
+}
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher install nightly-2026-11-08-fdc87ae
+nightly-2026-11-08-fdc87ae is older than nightly-2026-11-13-9f42064, which is installed: installing it as a rollback. The selection only moves to it when you pick it.
+Installed nightly-2026-11-08-fdc87ae. Prepare it next: horizon-launcher prepare --version nightly-2026-11-08-fdc87ae
+Using Horizon nightly-2026-11-08-fdc87ae
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher versions --installed
+nightly-2026-11-13-9f42064: Programmer Art and High Contrast not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The title panorama not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The Unifont glyphs not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The languages not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The sounds not added: no Minecraft folder found
+native-9f42064-ff14462828e6: Programmer Art and High Contrast not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The title panorama not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The Unifont glyphs not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The languages not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The sounds not added: no Minecraft folder found
+  nightly-2026-11-13-9f42064  prepared, no sounds (prepare again)
+* nightly-2026-11-08-fdc87ae  not prepared
+  native-9f42064-ff14462828e6  prepared, no sounds (prepare again)
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher prepare --version nightly-2026-11-08-fdc87ae --minecraft /home/runner/work/horizon_mod_builder/horizon_mod_builder/configs/minecraft/.minecraft
+Using Minecraft 26.3 from the chosen folder (/home/runner/work/horizon_mod_builder/horizon_mod_builder/configs/minecraft/.minecraft)
+Downloading the 26.3 version file from Mojang
+Copying the sounds from your Minecraft install
+No sound (the game will be silent): Missing /home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/launcher/linked-minecraft/assets/indexes/34.json. Horizon does not download the game: play 26.3 once in the launcher you play Minecraft Java Edition with so it downloads the game's files, then rerun. Horizon reads the official launcher's folder, ATLauncher's and the CurseForge app's; for Prism Launcher, MultiMC, the Modrinth App or GDLauncher, prepare from the Horizon launcher, which finds their files. If your launcher keeps them in another folder, pass --minecraft-dir or set HORIZON_MINECRAFT_DIR, or name the files with --version-json, --client-jar, --libraries-dir and --assets-dir.
+Imported client 26.3 from /home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/launcher/linked-minecraft/versions/26.3/26.3.jar
+client: 11383 classes, 98739 methods
+server: 7762 classes, 72269 methods
+Artifacts: /home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/launcher/versions/nightly-2026-11-08-fdc87ae/.local/minecraft/26.3
+Checked the game files in 1.8 s
+Exporting block states (VanillaHeightmapOracle)
+Exporting model bindings (VanillaBlockStateBindingOracle)
+Running vanilla's data generator reports
+Copying the client's assets and data
+Title panorama not imported: Missing /home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/launcher/linked-minecraft/assets/indexes/34.json. Horizon does not download the game: play 26.3 once in the launcher you play Minecraft Java Edition with so it downloads the game's files, then rerun. Horizon reads the official launcher's folder, ATLauncher's and the CurseForge app's; for Prism Launcher, MultiMC, the Modrinth App or GDLauncher, prepare from the Horizon launcher, which finds their files. If your launcher keeps them in another folder, pass --minecraft-dir or set HORIZON_MINECRAFT_DIR, or name the files with --version-json, --client-jar, --libraries-dir and --assets-dir.; run horizon-prepare panorama later
+Unifont glyphs not imported: Missing /home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/launcher/linked-minecraft/assets/indexes/34.json. Horizon does not download the game: play 26.3 once in the launcher you play Minecraft Java Edition with so it downloads the game's files, then rerun. Horizon reads the official launcher's folder, ATLauncher's and the CurseForge app's; for Prism Launcher, MultiMC, the Modrinth App or GDLauncher, prepare from the Horizon launcher, which finds their files. If your launcher keeps them in another folder, pass --minecraft-dir or set HORIZON_MINECRAFT_DIR, or name the files with --version-json, --client-jar, --libraries-dir and --assets-dir.; run horizon-prepare fonts later
+Programmer Art and High Contrast not imported: Missing /home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/launcher/linked-minecraft/assets/indexes/34.json. Horizon does not download the game: play 26.3 once in the launcher you play Minecraft Java Edition with so it downloads the game's files, then rerun. Horizon reads the official launcher's folder, ATLauncher's and the CurseForge app's; for Prism Launcher, MultiMC, the Modrinth App or GDLauncher, prepare from the Horizon launcher, which finds their files. If your launcher keeps them in another folder, pass --minecraft-dir or set HORIZON_MINECRAFT_DIR, or name the files with --version-json, --client-jar, --libraries-dir and --assets-dir.; run horizon-prepare packs later
+Languages not imported: Missing /home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/launcher/linked-minecraft/assets/indexes/34.json. Horizon does not download the game: play 26.3 once in the launcher you play Minecraft Java Edition with so it downloads the game's files, then rerun. Horizon reads the official launcher's folder, ATLauncher's and the CurseForge app's; for Prism Launcher, MultiMC, the Modrinth App or GDLauncher, prepare from the Horizon launcher, which finds their files. If your launcher keeps them in another folder, pass --minecraft-dir or set HORIZON_MINECRAFT_DIR, or name the files with --version-json, --client-jar, --libraries-dir and --assets-dir.; run horizon-prepare languages later
+Copied the client's assets and data in 1.1 s
+Writing the world generator's bundle
+Wrote the world generator's bundle in 0.3 s
+Exported block states in 6.2 s
+Exporting movement and attributes (VanillaBlockLandingOracle, VanillaEntityAttributeOracle)
+Exported model bindings in 7.0 s
+Exporting entity models (VanillaEntityModelExporter)
+Exported entity models in 0.2 s
+Exporting mob data (VanillaMobDataExporter)
+Exported mob data in 0.2 s
+Exporting command registries (VanillaCommandParseOracle)
+Ran the data generator in 9.8 s
+Exporting the creative inventory (VanillaCreativeTabsExporter)
+Exported movement and attributes in 7.6 s
+Exporting damage and health (VanillaPlayerHealthOracle, VanillaDamageSourceOracle)
+Exported damage and health in 0.0 s
+Exporting collision shapes (VanillaCollisionOracle)
+Exported collision shapes in 0.0 s
+Exporting face visibility (VanillaFaceVisibilityOracle)
+Exported command registries in 8.5 s
+Exported the creative inventory in 6.7 s
+Exported face visibility in 2.6 s
+Exporting gameplay facts (VanillaGameplayFactsExporter)
+Exported gameplay facts in 1.9 s
+Exporting entity types (VanillaEntityTypesExporter)
+Exported entity types in 0.0 s
+Exporting block behaviours (VanillaBlockBehaviourExporter)
+Exported block behaviours in 0.1 s
+Exporting block behavior (VanillaSimpleBlockOracle)
+Exported block behavior in 5.5 s
+Exporting structure blocks (VanillaStructureBlockExporter)
+Exported structure blocks in 0.1 s
+Prepared Horizon native-client resources: /home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/launcher/versions/nightly-2026-11-08-fdc87ae/.local/horizon-client/26.3
+Done in 26.2 s
+nightly-2026-11-08-fdc87ae is prepared.
+Combining 3 mods into one importable package
+Building combined  from .agent-work/tmp/issue-12/mods.zip, .agent-work/tmp/issue-12/mods.zip, .agent-work/tmp/issue-12/mods.zip
++ /usr/bin/docker run --rm --user 1001:1001 -w /home/runner/work/horizon_mod_builder/horizon_mod_builder -v /home/runner/work/horizon_mod_builder/horizon_mod_builder:/home/runner/work/horizon_mod_builder/horizon_mod_builder -e HOME=/home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/launcher/container-home -e CARGO_BUILD_JOBS -e GH_TOKEN -e GITHUB_TOKEN -e HORIZON_GITHUB_TOKEN -e HORIZON_HOME -e HORIZON_LAUNCHER_CLIPBOARD -e HORIZON_LAUNCHER_DESKTOP -e HORIZON_LAUNCHER_HOME -e HORIZON_LAUNCHER_NO_SELF_UPDATE -e HORIZON_LAUNCHER_TRASH -e HORIZON_NO_AUDIO -e HORIZON_PORTABLE_IMAGE -e HORIZON_PORTABLE_SKIP_IMAGE -e PAT_TOKEN horizon-mod-builder:glibc2.35 /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher native-build /home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/staging/combined --version nightly-2026-11-08-fdc87ae --trust-native-code --allow-version-mismatch --profile dev --ignore-pins
+[ 0:00] Incremental rebuild: Horizon commit 9f42064 to fdc87ae; mods enchantmenthints, freecam_plus, mod_menu (dev)
+[ 0:00] Downloading Horizon's source at fdc87ae
+[ 0:01] Applying the mixins
+[ 0:11] Compiling the game (dev): 1 crates, now syn
+[ 0:11] Compiling the game (dev): 2 crates, now naga
+[ 0:11] Compiling the game (dev): 3 crates, now horizon-core
+[ 0:11] Compiling the game (dev): 4 crates, now horizon-world
+[ 0:11] Compiling the game (dev): 5 crates, now wgpu-hal
+[ 0:11] Compiling the game (dev): 221 of 426 crates, now wgpu-hal
+[ 0:11] Compiling the game (dev): 222 of 426 crates, now horizon-telemetry
+[ 0:11] Compiling the game (dev): 340 of 426 crates, now horizon-telemetry
+[ 0:11] Compiling the game (dev): 341 of 426 crates, now horizon-cosmetics
+[ 0:20] Compiling the game (dev): 360 of 426 crates, now horizon-cosmetics
+[ 0:20] Compiling the game (dev): 361 of 426 crates, now horizon-cosmetics
+[ 0:20] Compiling the game (dev): 362 of 426 crates, now horizon-mod-api-gen
+[ 0:23] Compiling the game (dev): 362 of 426 crates, now horizon-mod-api-gen
+[ 0:23] Compiling the game (dev): 363 of 426 crates, now horizon-assets
+[ 0:33] Compiling the game (dev): 363 of 426 crates, now horizon-assets
+[ 0:33] Compiling the game (dev): 364 of 426 crates, now zerocopy-derive
+[ 0:34] Compiling the game (dev): 364 of 426 crates, now zerocopy-derive
+[ 0:34] Compiling the game (dev): 365 of 426 crates, now zerocopy
+[ 0:36] Compiling the game (dev): 365 of 426 crates, now zerocopy
+[ 0:36] Compiling the game (dev): 366 of 426 crates, now thiserror-impl
+[ 0:37] Compiling the game (dev): 366 of 426 crates, now thiserror-impl
+[ 0:37] Compiling the game (dev): 367 of 426 crates, now curve25519-dalek-derive
+[ 0:37] Compiling the game (dev): 367 of 426 crates, now curve25519-dalek-derive
+[ 0:37] Compiling the game (dev): 368 of 426 crates, now thiserror
+[ 0:37] Compiling the game (dev): 368 of 426 crates, now thiserror
+[ 0:37] Compiling the game (dev): 369 of 426 crates, now calloop
+[ 0:38] Compiling the game (dev): 369 of 426 crates, now calloop
+[ 0:38] Compiling the game (dev): 370 of 426 crates, now curve25519-dalek
+[ 0:38] Compiling the game (dev): 370 of 426 crates, now curve25519-dalek
+[ 0:38] Compiling the game (dev): 371 of 426 crates, now half
+[ 0:39] Compiling the game (dev): 371 of 426 crates, now half
+[ 0:39] Compiling the game (dev): 372 of 426 crates, now calloop-wayland-source
+[ 0:39] Compiling the game (dev): 372 of 426 crates, now calloop-wayland-source
+[ 0:39] Compiling the game (dev): 373 of 426 crates, now smithay-client-toolkit
+[ 0:39] Compiling the game (dev): 373 of 426 crates, now smithay-client-toolkit
+[ 0:39] Compiling the game (dev): 374 of 426 crates, now smithay-client-toolkit
+[ 0:39] Compiling the game (dev): 375 of 426 crates, now ahash
+[ 0:40] Compiling the game (dev): 375 of 426 crates, now ahash
+[ 0:40] Compiling the game (dev): 376 of 426 crates, now sctk-adwaita
+[ 0:41] Compiling the game (dev): 376 of 426 crates, now sctk-adwaita
+[ 0:41] Compiling the game (dev): 377 of 426 crates, now winit
+[ 0:41] Compiling the game (dev): 377 of 426 crates, now winit
+[ 0:41] Compiling the game (dev): 378 of 426 crates, now horizon-client-render
+[ 0:44] Compiling the game (dev): 378 of 426 crates, now horizon-client-render
+[ 0:44] Compiling the game (dev): 379 of 426 crates, now horizon-client-render
+[ 0:44] Compiling the game (dev): 380 of 426 crates, now horizon-client-core
+[ 0:57] Compiling the game (dev): 380 of 426 crates, now horizon-client-core
+[ 0:57] Compiling the game (dev): 381 of 426 crates, now wgpu-naga-bridge
+[ 1:01] Compiling the game (dev): 381 of 426 crates, now wgpu-naga-bridge
+[ 1:01] Compiling the game (dev): 382 of 426 crates, now wgpu-naga-bridge
+[ 1:01] Compiling the game (dev): 383 of 426 crates, now horizon-protocol
+[ 1:15] Compiling the game (dev): 383 of 426 crates, now horizon-protocol
+[ 1:15] Compiling the game (dev): 384 of 426 crates, now wgpu-core-deps-windows-linux-android
+[ 1:15] Compiling the game (dev): 384 of 426 crates, now wgpu-core-deps-windows-linux-android
+[ 1:15] Compiling the game (dev): 385 of 426 crates, now wgpu-core
+[ 1:27] Compiling the game (dev): 385 of 426 crates, now wgpu-core
+[ 1:27] Compiling the game (dev): 386 of 426 crates, now wgpu
+[ 1:34] Compiling the game (dev): 386 of 426 crates, now wgpu
+[ 1:34] Compiling the game (dev): 387 of 426 crates, now horizon-shader-api
+[ 1:36] Compiling the game (dev): 387 of 426 crates, now horizon-shader-api
+[ 1:36] Compiling the game (dev): 388 of 426 crates, now horizon-hdr
+[ 1:39] Compiling the game (dev): 388 of 426 crates, now horizon-hdr
+[ 1:39] Compiling the game (dev): 389 of 426 crates, now horizon-command
+[ 1:51] Compiling the game (dev): 389 of 426 crates, now horizon-command
+[ 1:51] Compiling the game (dev): 390 of 426 crates, now horizon-shaders
+[ 1:51] Compiling the game (dev): 390 of 426 crates, now horizon-shaders
+[ 1:51] Compiling the game (dev): 391 of 426 crates, now horizon-client-input
+[ 1:53] Compiling the game (dev): 391 of 426 crates, now horizon-client-input
+[ 1:53] Compiling the game (dev): 392 of 426 crates, now horizon-items
+[ 1:57] Compiling the game (dev): 392 of 426 crates, now horizon-items
+[ 1:57] Compiling the game (dev): 393 of 426 crates, now spake2
+[ 1:57] Compiling the game (dev): 393 of 426 crates, now spake2
+[ 1:57] Compiling the game (dev): 394 of 426 crates, now horizon-optifine
+[ 2:08] Compiling the game (dev): 394 of 426 crates, now horizon-optifine
+[ 2:08] Compiling the game (dev): 395 of 426 crates, now horizon-bench
+[ 2:10] Compiling the game (dev): 395 of 426 crates, now horizon-bench
+[ 2:10] Compiling the game (dev): 396 of 426 crates, now horizon-threads
+[ 2:12] Compiling the game (dev): 399 of 426 crates, now horizon-threads
+[ 2:12] Compiling the game (dev): 408 of 426 crates, now horizon-threads
+[ 2:12] Compiling the game (dev): 409 of 426 crates, now horizon-mods
+[ 2:22] Compiling the game (dev): 409 of 426 crates, now horizon-mods
+[ 2:22] Compiling the game (dev): 410 of 426 crates, now horizon-friends
+[ 2:31] Compiling the game (dev): 411 of 426 crates, now horizon-friends
+[ 2:31] Compiling the game (dev): 412 of 426 crates, now horizon-client
+[ 2:31] Compiling the game (dev): 412 of 426 crates, now horizon-client
+[ 2:31] Compiling the game (dev): 413 of 426 crates, now horizon-server-files
+[ 2:32] Compiling the game (dev): 413 of 426 crates, now horizon-server-files
+[ 2:32] Compiling the game (dev): 414 of 426 crates, now horizon-anticheat
+[ 2:34] Compiling the game (dev): 414 of 426 crates, now horizon-anticheat
+[ 2:34] Compiling the game (dev): 415 of 426 crates, now horizon-chat-filter
+[ 2:41] Compiling the game (dev): 415 of 426 crates, now horizon-chat-filter
+[ 2:41] Compiling the game (dev): 419 of 426 crates, now horizon-chat-filter
+[ 2:41] Compiling the game (dev): 420 of 426 crates, now horizon-chat-filter
+[ 2:41] Compiling the game (dev): 421 of 426 crates, now horizon-chat-filter
+[ 2:41] Compiling the game (dev): 422 of 426 crates, now horizon-client-lib
+[ 4:57] Compiling the game (dev): 422 of 426 crates, now horizon-client-lib
+[ 4:57] Compiling the game (dev): 422 of 426 crates, now horizon-client-lib
+[ 4:57] Compiling the game (dev): 422 of 426 crates, now horizon-client-lib
+[ 4:57] Compiling the game (dev): 423 of 426 crates, now horizon-client-lib
+[ 4:57] Compiling the game (dev): 424 of 426 crates, now horizon-client-lib
+[ 4:57] Compiling the game (dev): 425 of 426 crates, now horizon-client-lib
+[ 4:57] Installing the build
+[ 5:04] Built in 5 min 4 s (dev, incremental)
+native-fdc87ae-cd0f3ccb6014 built and selected for its instance (305 s).
+Built enchantmenthints+freecam_plus+mod_menu 0.1.0+1.1.0+0.3.5: /home/runner/work/horizon_mod_builder/horizon_mod_builder/dist/builds/enchantmenthints-freecam_plus-mod_menu-native-fdc87ae-cd0f3ccb6014.zip (52 MiB)
+Wrote /home/runner/work/horizon_mod_builder/horizon_mod_builder/dist/manifest.json

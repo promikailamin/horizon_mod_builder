@@ -24,6 +24,11 @@ on:
         type: choice
         options: [combined, separate]
         default: combined
+      ignore_pins:
+        description: 'Build every mod on horizon_version instead of the Horizon commit each mod pins'
+        required: false
+        type: boolean
+        default: false
 
   # Build when an issue is opened/reopened with the build-mod label, or gets it later.
   issues:
@@ -81,6 +86,7 @@ jobs:
           HORIZON_VERSION: ${{ github.event.inputs.horizon_version || 'latest' }}
           NATIVE_PROFILE: ${{ github.event.inputs.native_profile || 'performance' }}
           BUILD_MODE: ${{ github.event.inputs.mode || 'combined' }}
+          IGNORE_PINS: ${{ github.event.inputs.ignore_pins || 'false' }}
           INPUT_SOURCE: ${{ github.event.inputs.mod_source }}
           ISSUE_BODY: ${{ github.event.issue.body }}
           COMMENT_BODY: ${{ github.event.comment.body }}
@@ -89,6 +95,9 @@ jobs:
           args=(--horizon-version "${HORIZON_VERSION:-latest}" --profile "${NATIVE_PROFILE:-performance}" --portable)
           if [[ "${BUILD_MODE:-combined}" == "separate" ]]; then
             args+=(--separate)
+          fi
+          if [[ "${IGNORE_PINS:-false}" == "true" ]]; then
+            args+=(--ignore-pins)
           fi
 
           if [[ -n "${INPUT_SOURCE:-}" ]]; then

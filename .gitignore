@@ -81,3 +81,10 @@ __pycache__/
 !.agent-work/logs/issue11-ci-watch.log
 !.agent-work/logs/issue11-ci-dispatch.log
 !.agent-work/logs/issue11-tests.log
+!.agent-work/logs/issue12-build.log.gz
+!.agent-work/logs/issue12-build-fdc87ae-ignore-pins.log
+!.agent-work/logs/issue12-build-ignore-pins.log
+!.agent-work/logs/issue12-ci-dispatch.log
+!.agent-work/logs/issue12-ci-failed.log.gz
+!.agent-work/logs/issue12-modmenu-ignore-pins.log
+!.agent-work/logs/issue12-tests.log

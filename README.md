@@ -176,6 +176,12 @@ Manual `workflow_dispatch` inputs:
 - `horizon_version`: tag or `latest`
 - `native_profile`: `performance` (default), `dev`, or `release`
 - `mode`: `combined` (default, one package) or `separate` (one package per mod)
+- `ignore_pins`: build every mod on `horizon_version` even when it pins another Horizon commit
+  (default `false`)
+
+The launcher normally builds a combined package on the newest Horizon commit pinned by its mods.
+If an older mod does not compile there, set `horizon_version` to the matching Nightly and turn on
+`ignore_pins`, which forces all mods onto that version's commit.
 
 The workflow also runs when:
 

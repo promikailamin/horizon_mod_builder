@@ -1,0 +1,71 @@
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher versions --installed --json
+nightly-2026-11-13-9f42064: Programmer Art and High Contrast not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The title panorama not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The Unifont glyphs not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The languages not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The sounds not added: no Minecraft folder found
+native-9f42064-ff14462828e6: Programmer Art and High Contrast not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The title panorama not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The Unifont glyphs not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The languages not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The sounds not added: no Minecraft folder found
+{
+  "installed": [
+    "nightly-2026-11-13-9f42064",
+    "native-9f42064-ff14462828e6"
+  ],
+  "selected": "nightly-2026-11-13-9f42064"
+}
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher install latest
+nightly-2026-11-13-9f42064: Programmer Art and High Contrast not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The title panorama not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The Unifont glyphs not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The languages not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The sounds not added: no Minecraft folder found
+Installed nightly-2026-11-13-9f42064. It is prepared already, from another installed version.
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher versions --installed --json
+nightly-2026-11-13-9f42064: Programmer Art and High Contrast not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The title panorama not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The Unifont glyphs not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The languages not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The sounds not added: no Minecraft folder found
+native-9f42064-ff14462828e6: Programmer Art and High Contrast not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The title panorama not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The Unifont glyphs not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The languages not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The sounds not added: no Minecraft folder found
+{
+  "installed": [
+    "nightly-2026-11-13-9f42064",
+    "native-9f42064-ff14462828e6"
+  ],
+  "selected": "nightly-2026-11-13-9f42064"
+}
+Using Horizon nightly-2026-11-13-9f42064
++ /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher versions --installed
+nightly-2026-11-13-9f42064: Programmer Art and High Contrast not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The title panorama not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The Unifont glyphs not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The languages not added: no Minecraft folder found
+nightly-2026-11-13-9f42064: The sounds not added: no Minecraft folder found
+native-9f42064-ff14462828e6: Programmer Art and High Contrast not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The title panorama not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The Unifont glyphs not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The languages not added: no Minecraft folder found
+native-9f42064-ff14462828e6: The sounds not added: no Minecraft folder found
+* nightly-2026-11-13-9f42064  prepared, no sounds (prepare again)
+  native-9f42064-ff14462828e6  prepared, no sounds (prepare again)
+nightly-2026-11-13-9f42064 is already prepared
+Combining 3 mods into one importable package
+Building combined  from .agent-work/tmp/issue-12/mods.zip, .agent-work/tmp/issue-12/mods.zip, .agent-work/tmp/issue-12/mods.zip
++ /usr/bin/docker run --rm --user 1001:1001 -w /home/runner/work/horizon_mod_builder/horizon_mod_builder -v /home/runner/work/horizon_mod_builder/horizon_mod_builder:/home/runner/work/horizon_mod_builder/horizon_mod_builder -e HOME=/home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/launcher/container-home -e CARGO_BUILD_JOBS -e GH_TOKEN -e GITHUB_TOKEN -e HORIZON_GITHUB_TOKEN -e HORIZON_HOME -e HORIZON_LAUNCHER_CLIPBOARD -e HORIZON_LAUNCHER_DESKTOP -e HORIZON_LAUNCHER_HOME -e HORIZON_LAUNCHER_NO_SELF_UPDATE -e HORIZON_LAUNCHER_TRASH -e HORIZON_NO_AUDIO -e HORIZON_PORTABLE_IMAGE -e HORIZON_PORTABLE_SKIP_IMAGE -e PAT_TOKEN horizon-mod-builder:glibc2.35 /home/runner/work/horizon_mod_builder/horizon_mod_builder/horizon_launcher native-build /home/runner/work/horizon_mod_builder/horizon_mod_builder/.work/staging/combined --version nightly-2026-11-13-9f42064 --trust-native-code --allow-version-mismatch --profile dev --ignore-pins
+[ 0:00] Incremental rebuild: mods mod_menu (dev)
+[ 0:00] Downloading Horizon's source at 9f42064
+[ 0:00] Reusing patched game source
+[ 0:01] Compiling the game (dev): 1 crates, now horizon-client
+[ 0:25] Compiling the game (dev): 517 of 521 crates, now horizon-client
+[ 0:25] mod_menu was left out: made for another Horizon version
+[ 0:25] Up to date (no build needed) (dev)
+native-9f42064-ff14462828e6 built and selected for its instance (26 s).
+error: combined: combined build is missing mod_menu (left out: [{'id': 'mod_menu', 'version': '0.3.5', 'why': 'other-version', 'with': None}])
+Wrote /home/runner/work/horizon_mod_builder/horizon_mod_builder/dist/manifest.json
