@@ -26,7 +26,9 @@ for Minecraft 26.3 and Horizon Nightly 2026-11-13 (`9f42064`).
 
 The package was imported with `horizon-launcher import-build ... --trust-unsigned`
 and its `horizon-client --help` exited 0. Every binary requires at most
-GLIBC 2.35.
+GLIBC 2.35. The same build also succeeded in GitHub Actions
+([run #33](https://github.com/promikailamin/horizon_mod_builder/actions/runs/44020142440),
+artifact `horizon-mod-build-33`).
 
 ## Install
 

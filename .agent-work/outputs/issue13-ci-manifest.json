@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "generated_at": "2026-11-17T05:03:23Z",
+  "horizon_version": "nightly-2026-11-13-9f42064",
+  "profile": "performance",
+  "errors": [],
+  "jobs": [
+    {
+      "status": "built",
+      "name": "combined",
+      "mod_id": "airjump+enchantmenthints+freecam_plus+horizonmatica+mod_menu",
+      "mod_version": "0.0.2-26.3+0.1.0+1.1.0+0.3.3+0.3.6",
+      "mods": [
+        {
+          "id": "airjump",
+          "version": "0.0.2-26.3"
+        },
+        {
+          "id": "enchantmenthints",
+          "version": "0.1.0"
+        },
+        {
+          "id": "freecam_plus",
+          "version": "1.1.0"
+        },
+        {
+          "id": "horizonmatica",
+          "version": "0.3.3"
+        },
+        {
+          "id": "mod_menu",
+          "version": "0.3.6"
+        }
+      ],
+      "source": ".agent-work/outputs/issue13-converted-mods.zip, .agent-work/outputs/issue13-converted-mods.zip, .agent-work/outputs/issue13-converted-mods.zip, .agent-work/outputs/issue13-converted-mods.zip, .agent-work/outputs/issue13-converted-mods.zip",
+      "horizon_base": "nightly-2026-11-13-9f42064",
+      "horizon_revision": "9f42064c11efe7ef3e5ed2baad7ddc2a3b36eea0",
+      "horizon_mixins": "e59da9094f0c2fdda6c627fe9eff22dec6a906f0",
+      "profile": "performance",
+      "built_version": "native-9f42064-cd75e4726776",
+      "hnmod": null,
+      "hnmod_sha256": null,
+      "hnmods": [
+        {
+          "path": "hnmod/horizonmatica-0.3.3.hnmod",
+          "sha256": "c67fe23b3f906885b9d123d1feb16073d06ef0677ec8070af457bc16a32c8ac8"
+        },
+        {
+          "path": "hnmod/mod_menu-0.3.6.hnmod",
+          "sha256": "bc357e1cb142cbde905e76e7eadea44b18cb3615012abd3ffffd21421f9678be"
+        },
+        {
+          "path": "hnmod/airjump-0.0.2-26.3.hnmod",
+          "sha256": "4010803b48eaba30992896844c3094af8352365f484b7713a9bad4461e108d52"
+        },
+        {
+          "path": "hnmod/enchantmenthints-0.1.0.hnmod",
+          "sha256": "6f1b80a7c22e02b086d5eea2ed6f7c5481b3e40d6a974bf9e382a3df4a2de9df"
+        },
+        {
+          "path": "hnmod/freecam_plus-1.1.0.hnmod",
+          "sha256": "07deac7e39768a1750a0e42b377ed79561ee1dce4d4fac7bdd542c2da5c7e7c3"
+        }
+      ],
+      "artifact": "builds/airjump-enchantmenthints-freecam_plus-horizonmatica-mod_menu-native-9f42064-cd75e4726776.zip",
+      "artifact_bytes": 54458014,
+      "artifact_sha256": "a14e607ccc01554dbd726dc20d8a061b3f3c3286bdaee7702a7dc3744b69bc7f",
+      "log": "logs/combined.log"
+    }
+  ]
+}

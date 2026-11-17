@@ -105,6 +105,36 @@ Logs: `../logs/issue13-combined-build.log`, `../logs/issue13-modmenu-build.log.g
 `../logs/issue13-glibc.log`, `../logs/issue13-import.log`;
 manifest: `issue13-manifest.json`; hashes: `issue13-sha256.txt`.
 
+## GitHub Actions verification
+
+The same input archive was built by the **Build Horizon Mod** workflow with
+`mod_source=.agent-work/outputs/issue13-converted-mods.zip`,
+`horizon_version=nightly-2026-11-13-9f42064`, `native_profile=performance`,
+`mode=combined` and `ignore_pins=true`:
+
+<https://github.com/promikailamin/horizon_mod_builder/actions/runs/44020142440>
+
+Result: success in 10m59s. Artifact `horizon-mod-build-33`:
+
+- Built version: `native-9f42064-cd75e4726776` (same build)
+- Package SHA-256: `a14e607ccc01554dbd726dc20d8a061b3f3c3286bdaee7702a7dc3744b69bc7f`
+  (the zip hash differs from the local run because the launcher writes the build
+  time; the built version and mod contents are the same)
+- All five mods and `.hnmod` sources are present; `left_out` is empty.
+- The downloaded CI package passed `check_glibc.sh` and
+  `test_import_built.sh` (`imported-2026-11-17-81cd511`).
+
+CI logs: `../logs/issue13-ci-glibc.log`, `../logs/issue13-ci-import.log`,
+`../logs/issue13-ci-dispatch.log`; manifest: `issue13-ci-manifest.json`;
+hashes: `issue13-ci-sha256.txt`.
+
+## Release
+
+<https://github.com/promikailamin/horizon_mod_builder/releases/tag/mods-v0.0.1-26.3>
+
+Assets: the combined package, the five `.hnmod` source bundles, `SHA256SUMS` and
+`manifest.json`.
+
 ## Install the release package
 
 ```bash
