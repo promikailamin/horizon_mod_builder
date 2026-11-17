@@ -234,6 +234,33 @@ Last verified build (combined, performance profile, artifact `horizon-mod-build-
 imported and smoke-tested, and every binary requires at most GLIBC 2.35. Full details are in
 `.agent-work/outputs/issue12-verification.md`.
 
+## Horizon mod pack (issue #13)
+
+`mods.zip` from issue #13 holds five mods: `airjump 0.0.2-26.3`,
+`enchantmenthints 0.1.0`, `freecam_plus 1.1.0`, `horizonmatica 0.3.2` and
+`mod_menu 0.3.5`. Two of them were pinned to older Nightlies, so they were
+converted to the latest Horizon Nightly (`9f42064`) before building:
+
+- [`mods/horizonmatica`](mods/horizonmatica) is the upstream Horizonmatica
+  **0.3.3**, the maintainer's conversion of 0.3.2 (Horizon removed
+  `Game::options_to_game`).
+- [`mods/mod_menu`](mods/mod_menu) is Mod Menu **0.3.6**, converted from 0.3.5:
+  the same removed field is no longer touched when opening a mod's settings.
+
+The ready-to-build archive is `.agent-work/outputs/issue13-converted-mods.zip`:
+
+```bash
+./build.sh --portable .agent-work/outputs/issue13-converted-mods.zip \
+  --horizon-version nightly-2026-11-13-9f42064 --ignore-pins \
+  --profile performance
+```
+
+Last verified build: `native-9f42064-cd75e4726776`, containing all five mods and
+their `.hnmod` sources. It was imported and smoke-tested, and every binary
+requires at most GLIBC 2.35. The release is
+[Horizon Mods 0.0.1-26.3](https://github.com/promikailamin/horizon_mod_builder/releases/tag/mods-v0.0.1-26.3).
+Full details are in `.agent-work/outputs/issue13-verification.md`.
+
 ## AirJump native port (issue #9)
 
 [`mods/airjump`](mods/airjump) is the Horizon native port of the Fabric AirJump mod

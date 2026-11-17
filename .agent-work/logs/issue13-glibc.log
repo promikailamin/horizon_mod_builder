@@ -1,0 +1,5 @@
+horizon-ctl              max GLIBC 2.34
+horizon-prepare          max GLIBC 2.34
+horizon-client           max GLIBC 2.35
+horizon-server           max GLIBC 2.34
+OK: every binary requires at most GLIBC 2.35

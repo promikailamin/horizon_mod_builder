@@ -93,3 +93,12 @@ __pycache__/
 !.agent-work/logs/issue12-import.log
 !.agent-work/logs/issue12-modmenu-ignore-pins.log
 !.agent-work/logs/issue12-tests.log
+!.agent-work/logs/issue13-apt.log
+!.agent-work/logs/issue13-combined-build.log
+!.agent-work/logs/issue13-docker-build.log
+!.agent-work/logs/issue13-glibc.log
+!.agent-work/logs/issue13-import.log
+!.agent-work/logs/issue13-install-latest.log
+!.agent-work/logs/issue13-modmenu-build.log.gz
+!.agent-work/logs/issue13-prepare-latest.log
+!.agent-work/logs/issue13-tests.log
